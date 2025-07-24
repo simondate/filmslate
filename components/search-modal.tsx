@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { Search, Filter, Star, Calendar, Clock } from "lucide-react"
+import { Search, Filter, Star, Calendar, Clock, ArrowUpDown } from "lucide-react"
 import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
 import { ReviewModal } from "./review-modal"
 
 interface Movie {
@@ -223,6 +225,13 @@ interface SearchModalProps {
   onClose: () => void
 }
 
+// Mock function to get user's rating for a movie
+const getUserRating = (movieId: number): number => {
+  if (typeof window === "undefined") return 0
+  const savedRating = localStorage.getItem(`rating-${movieId}`)
+  return savedRating ? Number.parseInt(savedRating) : 0
+}
+
 export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedGenre, setSelectedGenre] = useState<string>("all")
@@ -232,8 +241,16 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null)
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
 
-  const filteredMovies = useMemo(() => {
-    return allMovies.filter((movie) => {
+  // Star rating filter states
+  const [showOnlyRated, setShowOnlyRated] = useState(false)
+  const [minUserRating, setMinUserRating] = useState([1])
+
+  // New sorting state
+  const [sortBy, setSortBy] = useState<string>("relevance")
+
+  const filteredAndSortedMovies = useMemo(() => {
+    // First filter the movies
+    const filtered = allMovies.filter((movie) => {
       const matchesSearch =
         movie.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         movie.director.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -252,18 +269,67 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
       const matchesRating = movie.rating >= ratingRange[0] && movie.rating <= ratingRange[1]
 
-      return matchesSearch && matchesGenre && matchesDecade && matchesRating
+      // Star rating filters
+      const userRating = getUserRating(movie.id)
+      const matchesRatedFilter = !showOnlyRated || userRating > 0
+      const matchesMinRating = !showOnlyRated || userRating >= minUserRating[0]
+
+      return matchesSearch && matchesGenre && matchesDecade && matchesRating && matchesRatedFilter && matchesMinRating
     })
-  }, [searchQuery, selectedGenre, selectedDecade, ratingRange])
+
+    // Then sort the filtered results
+    const sorted = [...filtered].sort((a, b) => {
+      switch (sortBy) {
+        case "alphabetical-asc":
+          return a.title.localeCompare(b.title)
+        case "alphabetical-desc":
+          return b.title.localeCompare(a.title)
+        case "rating-high":
+          return b.rating - a.rating
+        case "rating-low":
+          return a.rating - b.rating
+        case "year-new":
+          return b.year - a.year
+        case "year-old":
+          return a.year - b.year
+        case "user-rating-high":
+          const userRatingA = getUserRating(a.id)
+          const userRatingB = getUserRating(b.id)
+          if (userRatingA === userRatingB) {
+            return b.rating - a.rating // Secondary sort by community rating
+          }
+          return userRatingB - userRatingA
+        case "user-rating-low":
+          const userRatingA2 = getUserRating(a.id)
+          const userRatingB2 = getUserRating(b.id)
+          if (userRatingA2 === userRatingB2) {
+            return a.rating - b.rating // Secondary sort by community rating
+          }
+          return userRatingA2 - userRatingB2
+        default: // relevance
+          return 0
+      }
+    })
+
+    return sorted
+  }, [searchQuery, selectedGenre, selectedDecade, ratingRange, showOnlyRated, minUserRating, sortBy])
 
   const clearFilters = () => {
     setSelectedGenre("all")
     setSelectedDecade("all")
     setRatingRange([0, 10])
+    setShowOnlyRated(false)
+    setMinUserRating([1])
+    setSortBy("relevance")
   }
 
   const hasActiveFilters =
-    selectedGenre !== "all" || selectedDecade !== "all" || ratingRange[0] > 0 || ratingRange[1] < 10
+    selectedGenre !== "all" ||
+    selectedDecade !== "all" ||
+    ratingRange[0] > 0 ||
+    ratingRange[1] < 10 ||
+    showOnlyRated ||
+    sortBy !== "relevance"
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -285,8 +351,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             />
           </div>
 
-          {/* Filter Toggle */}
-          <div className="flex items-center justify-between">
+          {/* Filter and Sort Controls */}
+          <div className="flex items-center justify-between flex-wrap gap-4">
             <Button
               variant="outline"
               onClick={() => setShowFilters(!showFilters)}
@@ -300,68 +366,140 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     [
                       selectedGenre !== "all",
                       selectedDecade !== "all",
-                      ratingRange[0] > 0 || ratingRange[1] < 10 ? "Rating" : "",
+                      ratingRange[0] > 0 || ratingRange[1] < 10,
+                      showOnlyRated,
+                      sortBy !== "relevance",
                     ].filter(Boolean).length
                   }
                 </Badge>
               )}
             </Button>
-            {hasActiveFilters && (
-              <Button variant="ghost" onClick={clearFilters} className="text-gray-400 hover:text-white">
-                Clear Filters
-              </Button>
-            )}
+
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <ArrowUpDown className="w-4 h-4 text-gray-400" />
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="bg-black border-gray-700 w-48">
+                    <SelectValue placeholder="Sort by..." />
+                  </SelectTrigger>
+                  <SelectContent className="bg-black border-gray-700">
+                    <SelectItem value="relevance">Relevance</SelectItem>
+                    <SelectItem value="alphabetical-asc">A to Z</SelectItem>
+                    <SelectItem value="alphabetical-desc">Z to A</SelectItem>
+                    <SelectItem value="rating-high">Highest Rated</SelectItem>
+                    <SelectItem value="rating-low">Lowest Rated</SelectItem>
+                    <SelectItem value="year-new">Newest First</SelectItem>
+                    <SelectItem value="year-old">Oldest First</SelectItem>
+                    <SelectItem value="user-rating-high">My Highest Rated</SelectItem>
+                    <SelectItem value="user-rating-low">My Lowest Rated</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {hasActiveFilters && (
+                <Button variant="ghost" onClick={clearFilters} className="text-gray-400 hover:text-white">
+                  Clear All
+                </Button>
+              )}
+            </div>
           </div>
 
           {/* Filters */}
           {showFilters && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-900 rounded-lg">
-              <div>
-                <label className="block text-sm font-medium mb-2">Genre</label>
-                <Select value={selectedGenre} onValueChange={setSelectedGenre}>
-                  <SelectTrigger className="bg-black border-gray-700">
-                    <SelectValue placeholder="All genres" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-black border-gray-700">
-                    <SelectItem value="all">All genres</SelectItem>
-                    {genres.map((genre) => (
-                      <SelectItem key={genre} value={genre}>
-                        {genre}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+            <div className="space-y-4 p-4 bg-gray-900 rounded-lg">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Genre</label>
+                  <Select value={selectedGenre} onValueChange={setSelectedGenre}>
+                    <SelectTrigger className="bg-black border-gray-700">
+                      <SelectValue placeholder="All genres" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-black border-gray-700">
+                      <SelectItem value="all">All genres</SelectItem>
+                      {genres.map((genre) => (
+                        <SelectItem key={genre} value={genre}>
+                          {genre}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Decade</label>
+                  <Select value={selectedDecade} onValueChange={setSelectedDecade}>
+                    <SelectTrigger className="bg-black border-gray-700">
+                      <SelectValue placeholder="All decades" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-black border-gray-700">
+                      <SelectItem value="all">All decades</SelectItem>
+                      {decades.map((decade) => (
+                        <SelectItem key={decade} value={decade}>
+                          {decade}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Community Rating: {ratingRange[0]} - {ratingRange[1]}
+                  </label>
+                  <Slider
+                    value={ratingRange}
+                    onValueChange={setRatingRange}
+                    max={10}
+                    min={0}
+                    step={0.1}
+                    className="mt-2"
+                  />
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">Decade</label>
-                <Select value={selectedDecade} onValueChange={setSelectedDecade}>
-                  <SelectTrigger className="bg-black border-gray-700">
-                    <SelectValue placeholder="All decades" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-black border-gray-700">
-                    <SelectItem value="all">All decades</SelectItem>
-                    {decades.map((decade) => (
-                      <SelectItem key={decade} value={decade}>
-                        {decade}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              {/* Star Rating Filters */}
+              <div className="border-t border-gray-700 pt-4">
+                <h4 className="text-sm font-medium mb-3 flex items-center">
+                  <Star className="w-4 h-4 mr-2 text-yellow-400" />
+                  Your Ratings
+                </h4>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Rating: {ratingRange[0]} - {ratingRange[1]}
-                </label>
-                <Slider
-                  value={ratingRange}
-                  onValueChange={setRatingRange}
-                  max={10}
-                  min={0}
-                  step={0.1}
-                  className="mt-2"
-                />
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Switch id="show-only-rated" checked={showOnlyRated} onCheckedChange={setShowOnlyRated} />
+                    <Label htmlFor="show-only-rated" className="text-sm">
+                      Show only movies I've rated
+                    </Label>
+                  </div>
+
+                  {showOnlyRated && (
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Minimum rating: {minUserRating[0]} star{minUserRating[0] !== 1 ? "s" : ""}
+                      </label>
+                      <div className="flex items-center space-x-2">
+                        <Slider
+                          value={minUserRating}
+                          onValueChange={setMinUserRating}
+                          max={5}
+                          min={1}
+                          step={1}
+                          className="flex-1"
+                        />
+                        <div className="flex">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star
+                              key={star}
+                              className={`w-4 h-4 ${
+                                star <= minUserRating[0] ? "text-yellow-400 fill-current" : "text-gray-600"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}
@@ -372,64 +510,88 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <p className="text-gray-400">
-                    {filteredMovies.length} result{filteredMovies.length !== 1 ? "s" : ""} found
+                    {filteredAndSortedMovies.length} result{filteredAndSortedMovies.length !== 1 ? "s" : ""} found
+                    {sortBy !== "relevance" && (
+                      <span className="ml-2 text-gray-500">
+                        • Sorted by {sortBy.replace("-", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+                      </span>
+                    )}
                   </p>
                 </div>
 
-                {filteredMovies.length === 0 ? (
+                {filteredAndSortedMovies.length === 0 ? (
                   <div className="text-center py-12">
                     <p className="text-gray-400 text-lg">No movies found matching your criteria</p>
                     <p className="text-gray-500 text-sm mt-2">Try adjusting your search or filters</p>
                   </div>
                 ) : (
                   <div className="grid gap-4">
-                    {filteredMovies.map((movie) => (
-                      <div
-                        key={movie.id}
-                        className="flex items-start space-x-4 p-4 bg-gray-900 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
-                        onClick={() => {
-                          setSelectedMovie(movie)
-                          setIsReviewModalOpen(true)
-                          onClose()
-                        }}
-                      >
-                        <div className="flex-shrink-0">
-                          <Image
-                            src={movie.poster || "/placeholder.svg"}
-                            alt={movie.title}
-                            width={80}
-                            height={120}
-                            className="rounded-md object-cover"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-lg mb-1">{movie.title}</h3>
-                          <p className="text-gray-400 text-sm mb-2">Directed by {movie.director}</p>
-                          <div className="flex items-center space-x-4 mb-2">
-                            <div className="flex items-center space-x-1">
-                              <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                              <span className="text-sm">{movie.rating}</span>
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <Calendar className="w-4 h-4 text-gray-400" />
-                              <span className="text-sm text-gray-300">{movie.year}</span>
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <Clock className="w-4 h-4 text-gray-400" />
-                              <span className="text-sm text-gray-300">{movie.duration}</span>
-                            </div>
+                    {filteredAndSortedMovies.map((movie) => {
+                      const userRating = getUserRating(movie.id)
+                      return (
+                        <div
+                          key={movie.id}
+                          className="flex items-start space-x-4 p-4 bg-gray-900 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+                          onClick={() => {
+                            setSelectedMovie(movie)
+                            setIsReviewModalOpen(true)
+                            onClose()
+                          }}
+                        >
+                          <div className="flex-shrink-0">
+                            <Image
+                              src={movie.poster || "/placeholder.svg"}
+                              alt={movie.title}
+                              width={80}
+                              height={120}
+                              className="rounded-md object-cover"
+                            />
                           </div>
-                          <div className="flex flex-wrap gap-1 mb-2">
-                            {movie.genres.map((genre) => (
-                              <Badge key={genre} variant="secondary" className="bg-gray-700 text-gray-300 text-xs">
-                                {genre}
-                              </Badge>
-                            ))}
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-lg mb-1">{movie.title}</h3>
+                            <p className="text-gray-400 text-sm mb-2">Directed by {movie.director}</p>
+                            <div className="flex items-center space-x-4 mb-2">
+                              <div className="flex items-center space-x-1">
+                                <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                                <span className="text-sm">{movie.rating}</span>
+                                <span className="text-xs text-gray-500">community</span>
+                              </div>
+                              {userRating > 0 && (
+                                <div className="flex items-center space-x-1">
+                                  <div className="flex">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                      <Star
+                                        key={star}
+                                        className={`w-3 h-3 ${
+                                          star <= userRating ? "text-blue-400 fill-current" : "text-gray-600"
+                                        }`}
+                                      />
+                                    ))}
+                                  </div>
+                                  <span className="text-xs text-gray-500">your rating</span>
+                                </div>
+                              )}
+                              <div className="flex items-center space-x-1">
+                                <Calendar className="w-4 h-4 text-gray-400" />
+                                <span className="text-sm text-gray-300">{movie.year}</span>
+                              </div>
+                              <div className="flex items-center space-x-1">
+                                <Clock className="w-4 h-4 text-gray-400" />
+                                <span className="text-sm text-gray-300">{movie.duration}</span>
+                              </div>
+                            </div>
+                            <div className="flex flex-wrap gap-1 mb-2">
+                              {movie.genres.map((genre) => (
+                                <Badge key={genre} variant="secondary" className="bg-gray-700 text-gray-300 text-xs">
+                                  {genre}
+                                </Badge>
+                              ))}
+                            </div>
+                            <p className="text-gray-400 text-sm line-clamp-2">{movie.description}</p>
                           </div>
-                          <p className="text-gray-400 text-sm line-clamp-2">{movie.description}</p>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 )}
               </div>

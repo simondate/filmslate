@@ -2,123 +2,111 @@
 
 import { Calendar, Clock, ArrowRight } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
 
-interface BlogPost {
-  id: string
-  title: string
-  excerpt: string
-  date: string
-  readTime: string
-  category: string
-  featuredImage: string
-  slug: string
-}
-
-const featuredPosts: BlogPost[] = [
+const blogPosts = [
   {
-    id: "1",
-    title: "The Farewell: A Masterclass in Cultural Storytelling",
-    excerpt:
-      "Lulu Wang's deeply personal film about family, lies, and love transcends cultural boundaries while remaining authentically Chinese-American. What struck me most during my third viewing was how Wang uses silence and subtext...",
-    date: "2024-01-20",
-    readTime: "4 min read",
+    id: 1,
+    title: "The Art of Independent Storytelling",
+    excerpt: "Exploring how indie filmmakers craft intimate narratives that resonate with audiences worldwide...",
     category: "Film Analysis",
-    featuredImage: "/placeholder.svg?height=200&width=300",
-    slug: "the-farewell-cultural-storytelling",
+    readTime: "5 min read",
+    publishedAt: "2024-01-15",
+    image: "/placeholder.svg?height=200&width=300&text=Independent+Storytelling",
+    slug: "art-of-independent-storytelling",
   },
   {
-    id: "2",
-    title: "Why Independent Cinema Matters More Than Ever",
-    excerpt:
-      "In an era of franchise filmmaking and algorithm-driven content, independent cinema stands as a beacon of authentic storytelling. These films don't just entertain—they challenge, provoke, and inspire...",
-    date: "2024-01-22",
+    id: 2,
+    title: "Sundance 2024: Hidden Gems Worth Watching",
+    excerpt: "My personal picks from this year's Sundance Film Festival that deserve your attention...",
+    category: "Festival Coverage",
+    readTime: "8 min read",
+    publishedAt: "2024-01-28",
+    image: "/placeholder.svg?height=200&width=300&text=Sundance+2024",
+    slug: "sundance-2024-hidden-gems",
+  },
+  {
+    id: 3,
+    title: "Building FilmSlate: A Love Letter to Cinema",
+    excerpt: "The story behind creating a platform dedicated to celebrating independent film...",
+    category: "Behind the Scenes",
     readTime: "6 min read",
-    category: "Industry Thoughts",
-    featuredImage: "/placeholder.svg?height=200&width=300",
-    slug: "why-independent-cinema-matters",
-  },
-  {
-    id: "3",
-    title: "Parasite: The Staircase as Social Commentary",
-    excerpt:
-      "Bong Joon-ho's genre-defying thriller is a masterpiece of visual storytelling that uses architecture as character. Every staircase in this film tells us exactly where we are in the social hierarchy...",
-    date: "2024-01-12",
-    readTime: "7 min read",
-    category: "Director Spotlight",
-    featuredImage: "/placeholder.svg?height=200&width=300",
-    slug: "parasite-staircase-social-commentary",
+    publishedAt: "2024-02-05",
+    image: "/placeholder.svg?height=200&width=300&text=Building+FilmSlate",
+    slug: "building-filmslate-love-letter-cinema",
   },
 ]
 
 export function FounderBlog() {
   return (
-    <section className="py-16 px-6 bg-gray-900">
+    <section className="px-6 py-20 bg-gradient-to-b from-black to-gray-900">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-lg">IS</span>
-            </div>
-            <h2 className="text-3xl font-bold text-white">Founder's Thoughts</h2>
-          </div>
+          <h2 className="text-4xl font-bold mb-4">Founder's Thoughts</h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Personal reflections on independent cinema, emerging filmmakers, and the stories that shape our world.
+            Personal reflections on independent cinema, film festivals, and the art of storytelling
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredPosts.map((post) => (
-            <Card
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {blogPosts.map((post) => (
+            <article
               key={post.id}
-              className="bg-black border-gray-800 hover:border-gray-700 transition-colors group cursor-pointer"
+              className="bg-gray-800 rounded-lg overflow-hidden hover:bg-gray-750 transition-colors group"
             >
-              <div className="relative overflow-hidden rounded-t-lg">
+              <div className="relative h-48 overflow-hidden">
                 <Image
-                  src={post.featuredImage || "/placeholder.svg"}
+                  src={post.image || "/placeholder.svg"}
                   alt={post.title}
-                  width={300}
-                  height={200}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute top-4 left-4">
-                  <Badge className="bg-red-600 text-white border-none">{post.category}</Badge>
+                  <Badge className="bg-red-600 text-white">{post.category}</Badge>
                 </div>
               </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-red-400 transition-colors line-clamp-2">
-                  {post.title}
-                </h3>
-                <p className="text-gray-400 text-sm mb-4 line-clamp-3">{post.excerpt}</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4 text-xs text-gray-500">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="w-3 h-3" />
-                      <span>{new Date(post.date).toLocaleDateString()}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="w-3 h-3" />
-                      <span>{post.readTime}</span>
-                    </div>
+
+              <div className="p-6">
+                <div className="flex items-center space-x-4 text-sm text-gray-400 mb-3">
+                  <div className="flex items-center space-x-1">
+                    <Calendar className="w-4 h-4" />
+                    <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
                   </div>
-                  <Button variant="ghost" size="sm" className="text-red-400 hover:text-red-300 hover:bg-red-900/20 p-0">
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
+                  <div className="flex items-center space-x-1">
+                    <Clock className="w-4 h-4" />
+                    <span>{post.readTime}</span>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+
+                <h3 className="text-xl font-semibold mb-3 group-hover:text-red-400 transition-colors">{post.title}</h3>
+
+                <p className="text-gray-400 text-sm mb-4 line-clamp-3">{post.excerpt}</p>
+
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="inline-flex items-center text-red-400 hover:text-red-300 transition-colors text-sm font-medium"
+                >
+                  Read More
+                  <ArrowRight className="w-4 h-4 ml-1" />
+                </Link>
+              </div>
+            </article>
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        <div className="text-center">
           <Button
             variant="outline"
             className="border-red-600 text-red-400 hover:bg-red-600 hover:text-white bg-transparent"
+            asChild
           >
-            View All Posts
+            <Link href="/blog">
+              View All Posts
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
           </Button>
         </div>
       </div>
