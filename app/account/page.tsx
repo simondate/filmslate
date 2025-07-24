@@ -168,11 +168,15 @@ export default function AccountPage() {
                     <CardTitle className="text-xl">Free</CardTitle>
                     <CardDescription className="text-gray-400">Basic access to FilmSlate</CardDescription>
                     <p className="text-4xl font-bold mt-4">
-                      $0<span className="text-lg text-gray-400">/month</span>
+                      14 <span className="text-lg text-gray-400">days remaining</span>
                     </p>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <ul className="space-y-2 text-sm text-gray-300">
+                      <li className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                        30 Day free trial
+                      </li>
                       <li className="flex items-center">
                         <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
                         SD Streaming
@@ -184,10 +188,6 @@ export default function AccountPage() {
                       <li className="flex items-center">
                         <XCircle className="w-4 h-4 mr-2 text-red-500" />
                         No Offline Downloads
-                      </li>
-                      <li className="flex items-center">
-                        <XCircle className="w-4 h-4 mr-2 text-red-500" />
-                        Ads Included
                       </li>
                     </ul>
                     <Button
