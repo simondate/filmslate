@@ -174,7 +174,7 @@ const movieCategories = [
         id: 10,
         title: "Call Me By Your Name",
         year: 2017,
-        rating: 4.2,
+        rating: 4.3,
         duration: "132 min",
         poster: "/call-me-by-your-name-poster.png",
         genres: ["Drama", "Romance"],
