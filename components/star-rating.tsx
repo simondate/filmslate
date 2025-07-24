@@ -1,36 +1,64 @@
 "use client"
 
 import { Star } from "lucide-react"
+import { useState } from "react"
 
 interface StarRatingProps {
   rating: number
-  maxRating?: number
-  size?: "sm" | "md" | "lg"
-  showNumber?: boolean
+  onRatingChange?: (rating: number) => void
+  readOnly?: boolean
+  size?: "small" | "medium" | "large"
 }
 
-export function StarRating({ rating, maxRating = 5, size = "md", showNumber = false }: StarRatingProps) {
+export function StarRating({ rating, onRatingChange, readOnly = false, size = "medium" }: StarRatingProps) {
+  const [hoverRating, setHoverRating] = useState(0)
+
   const sizeClasses = {
-    sm: "w-3 h-3",
-    md: "w-4 h-4",
-    lg: "w-5 h-5",
+    small: "w-4 h-4",
+    medium: "w-5 h-5",
+    large: "w-6 h-6",
   }
 
-  const stars = []
+  const handleClick = (starRating: number) => {
+    if (!readOnly && onRatingChange) {
+      onRatingChange(starRating)
+    }
+  }
 
-  for (let i = 1; i <= maxRating; i++) {
-    stars.push(
-      <Star
-        key={i}
-        className={`${sizeClasses[size]} ${i <= rating ? "text-yellow-400 fill-current" : "text-gray-600"}`}
-      />,
-    )
+  const handleMouseEnter = (starRating: number) => {
+    if (!readOnly) {
+      setHoverRating(starRating)
+    }
+  }
+
+  const handleMouseLeave = () => {
+    if (!readOnly) {
+      setHoverRating(0)
+    }
   }
 
   return (
     <div className="flex items-center space-x-1">
-      <div className="flex space-x-0.5">{stars}</div>
-      {showNumber && <span className="text-sm text-gray-400 ml-2">{rating.toFixed(1)}</span>}
+      {[1, 2, 3, 4, 5].map((star) => {
+        const isActive = star <= (hoverRating || rating)
+        return (
+          <button
+            key={star}
+            type="button"
+            onClick={() => handleClick(star)}
+            onMouseEnter={() => handleMouseEnter(star)}
+            onMouseLeave={handleMouseLeave}
+            disabled={readOnly}
+            className={`${readOnly ? "cursor-default" : "cursor-pointer hover:scale-110"} transition-transform`}
+          >
+            <Star
+              className={`${sizeClasses[size]} ${
+                isActive ? "text-yellow-400 fill-current" : "text-gray-600"
+              } transition-colors`}
+            />
+          </button>
+        )
+      })}
     </div>
   )
 }

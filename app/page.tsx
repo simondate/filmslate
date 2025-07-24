@@ -20,7 +20,7 @@ const movieCategories = [
         id: 1,
         title: "The Farewell",
         year: 2019,
-        rating: 4.1, // Original 8.2 / 2
+        rating: 8.2,
         duration: "100 min",
         poster: "/the-farewell-inspired-poster.png",
         genres: ["Drama", "Comedy"],
@@ -32,7 +32,7 @@ const movieCategories = [
         id: 2,
         title: "Minari",
         year: 2020,
-        rating: 4.05, // Original 8.1 / 2
+        rating: 8.1,
         duration: "115 min",
         poster: "/minari-inspired-poster.png",
         genres: ["Drama"],
@@ -43,7 +43,7 @@ const movieCategories = [
         id: 3,
         title: "Manchester by the Sea",
         year: 2016,
-        rating: 4.25, // Original 8.5 / 2
+        rating: 8.5,
         duration: "137 min",
         poster: "/manchester-by-the-sea-poster.png",
         genres: ["Drama"],
@@ -54,7 +54,7 @@ const movieCategories = [
         id: 4,
         title: "Lady Bird",
         year: 2017,
-        rating: 4.15, // Original 8.3 / 2
+        rating: 8.3,
         duration: "94 min",
         poster: "/lady-bird-poster.png",
         genres: ["Comedy", "Drama"],
@@ -66,7 +66,7 @@ const movieCategories = [
         id: 5,
         title: "Moonlight",
         year: 2016,
-        rating: 4.35, // Original 8.7 / 2
+        rating: 8.7,
         duration: "111 min",
         poster: "/moonlight-poster.png",
         genres: ["Drama"],
@@ -83,7 +83,7 @@ const movieCategories = [
         id: 6,
         title: "Nomadland",
         year: 2020,
-        rating: 4.0, // Original 8.0 / 2
+        rating: 8.0,
         duration: "107 min",
         poster: "/nomadland-poster.png",
         genres: ["Drama"],
@@ -95,7 +95,7 @@ const movieCategories = [
         id: 7,
         title: "The Florida Project",
         year: 2017,
-        rating: 4.05, // Original 8.1 / 2
+        rating: 8.1,
         duration: "111 min",
         poster: "/florida-project-inspired-poster.png",
         genres: ["Drama"],
@@ -107,7 +107,7 @@ const movieCategories = [
         id: 8,
         title: "Room",
         year: 2015,
-        rating: 4.1, // Original 8.2 / 2
+        rating: 8.2,
         duration: "118 min",
         poster: "/room-movie-poster.png",
         genres: ["Drama", "Thriller"],
@@ -119,7 +119,7 @@ const movieCategories = [
         id: 9,
         title: "Her",
         year: 2013,
-        rating: 4.0, // Original 8.0 / 2
+        rating: 8.0,
         duration: "126 min",
         poster: "/her-movie-poster.png",
         genres: ["Drama", "Romance", "Sci-Fi"],
@@ -131,7 +131,7 @@ const movieCategories = [
         id: 10,
         title: "Call Me By Your Name",
         year: 2017,
-        rating: 4.2, // Original 8.4 / 2
+        rating: 8.4,
         duration: "132 min",
         poster: "/call-me-by-your-name-poster.png",
         genres: ["Drama", "Romance"],
@@ -148,7 +148,7 @@ const movieCategories = [
         id: 11,
         title: "Parasite",
         year: 2019,
-        rating: 4.45, // Original 8.9 / 2
+        rating: 8.9,
         duration: "132 min",
         poster: "/placeholder.svg?height=300&width=200",
         genres: ["Thriller", "Drama", "Comedy"],
@@ -160,7 +160,7 @@ const movieCategories = [
         id: 12,
         title: "The Lighthouse",
         year: 2019,
-        rating: 4.05, // Original 8.1 / 2
+        rating: 8.1,
         duration: "109 min",
         poster: "/placeholder.svg?height=300&width=200",
         genres: ["Horror", "Drama"],
@@ -172,7 +172,7 @@ const movieCategories = [
         id: 13,
         title: "Midsommar",
         year: 2019,
-        rating: 3.9, // Original 7.8 / 2
+        rating: 7.8,
         duration: "148 min",
         poster: "/placeholder.svg?height=300&width=200",
         genres: ["Horror", "Drama"],
@@ -184,7 +184,7 @@ const movieCategories = [
         id: 14,
         title: "The Witch",
         year: 2015,
-        rating: 3.75, // Original 7.5 / 2
+        rating: 7.5,
         duration: "92 min",
         poster: "/placeholder.svg?height=300&width=200",
         genres: ["Horror", "Drama"],
@@ -196,7 +196,7 @@ const movieCategories = [
         id: 15,
         title: "Uncut Gems",
         year: 2019,
-        rating: 4.1, // Original 8.2 / 2
+        rating: 8.2,
         duration: "135 min",
         poster: "/placeholder.svg?height=300&width=200",
         genres: ["Thriller", "Drama"],
@@ -213,7 +213,7 @@ const movieCategories = [
         id: 16,
         title: "Won't You Be My Neighbor?",
         year: 2018,
-        rating: 4.25, // Original 8.5 / 2
+        rating: 8.5,
         duration: "94 min",
         poster: "/placeholder.svg?height=300&width=200",
         genres: ["Documentary"],
@@ -224,7 +224,7 @@ const movieCategories = [
         id: 17,
         title: "Free Solo",
         year: 2018,
-        rating: 4.1, // Original 8.2 / 2
+        rating: 8.2,
         duration: "100 min",
         poster: "/placeholder.svg?height=300&width=200",
         genres: ["Documentary"],
@@ -236,7 +236,7 @@ const movieCategories = [
         id: 18,
         title: "Three Identical Strangers",
         year: 2018,
-        rating: 4.05, // Original 8.1 / 2
+        rating: 8.1,
         duration: "96 min",
         poster: "/placeholder.svg?height=300&width=200",
         genres: ["Documentary"],
@@ -248,7 +248,7 @@ const movieCategories = [
         id: 19,
         title: "The Act of Killing",
         year: 2012,
-        rating: 4.1, // Original 8.2 / 2
+        rating: 8.2,
         duration: "117 min",
         poster: "/placeholder.svg?height=300&width=200",
         genres: ["Documentary"],
@@ -260,7 +260,7 @@ const movieCategories = [
         id: 20,
         title: "Honeyland",
         year: 2019,
-        rating: 4.0, // Original 8.0 / 2
+        rating: 8.0,
         duration: "85 min",
         poster: "/placeholder.svg?height=300&width=200",
         genres: ["Documentary"],
@@ -275,12 +275,12 @@ const movieCategories = [
 const featuredMovie = {
   title: "Everything Everywhere All at Once",
   year: 2022,
-  rating: 4.45, // Original 8.9 / 2
+  rating: 8.9,
   duration: "139 min",
   description:
     "A mind-bending multiverse adventure that follows a Chinese-American laundromat owner who discovers she must connect with parallel universe versions of herself to prevent a powerful being from destroying everything.",
   genres: ["Sci-Fi", "Comedy", "Drama"],
-  backdrop: "/everything-everywhere-all-at-once-backdrop.png", // Updated backdrop
+  backdrop: "/placeholder.svg?height=600&width=1200",
 }
 
 export default function IndieFilmApp() {
@@ -293,11 +293,14 @@ export default function IndieFilmApp() {
       <header className="fixed top-0 w-full z-50 bg-gradient-to-b from-black/90 to-transparent backdrop-blur-md border-b border-gray-800/50">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center space-x-8">
-            <Link href="/" className="text-2xl font-bold text-purple-800 flex items-center gap-2">
-              <Image src="/film-reel-icon.png" alt="FilmSlate Logo" width={32} height={32} className="rounded-md" />
+            <Link href="/" className="text-2xl font-bold text-red-500">
               FilmSlate
             </Link>
-            <nav className="hidden md:flex space-x-6">{/* Removed Home Link */}</nav>
+            <nav className="hidden md:flex space-x-6">
+              <Link href="/" className="hover:text-gray-300 transition-colors">
+                Home
+              </Link>
+            </nav>
           </div>
           <div className="flex items-center space-x-4">
             <div className="relative hidden md:block">
@@ -315,12 +318,10 @@ export default function IndieFilmApp() {
             >
               <Search className="w-5 h-5" />
             </button>
-            <Link href="/account">
-              <Avatar className="w-8 h-8 cursor-pointer hover:ring-2 hover:ring-purple-800 transition-all">
-                <AvatarImage src="/placeholder.svg?height=32&width=32" />
-                <AvatarFallback>U</AvatarFallback>
-              </Avatar>
-            </Link>
+            <Avatar className="w-8 h-8">
+              <AvatarImage src="/placeholder.svg?height=32&width=32" />
+              <AvatarFallback>U</AvatarFallback>
+            </Avatar>
           </div>
         </div>
       </header>
@@ -344,7 +345,7 @@ export default function IndieFilmApp() {
           <div className="flex items-center space-x-4 mb-4">
             <div className="flex items-center space-x-1">
               <Star className="w-5 h-5 text-yellow-400 fill-current" />
-              <span className="font-semibold">{featuredMovie.rating.toFixed(1)}</span> {/* Display with 1 decimal */}
+              <span className="font-semibold">{featuredMovie.rating}</span>
             </div>
             <div className="flex items-center space-x-1">
               <Calendar className="w-4 h-4 text-gray-400" />
@@ -405,7 +406,7 @@ export default function IndieFilmApp() {
                         <span>{movie.year}</span>
                         <div className="flex items-center space-x-1">
                           <Star className="w-3 h-3 text-yellow-400 fill-current" />
-                          <span>{movie.rating.toFixed(1)}</span> {/* Display with 1 decimal */}
+                          <span>{movie.rating}</span>
                         </div>
                       </div>
                       <div className="flex items-center space-x-1 mt-1">
@@ -429,7 +430,7 @@ export default function IndieFilmApp() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-xl font-bold text-purple-800 mb-4">FilmSlate</h3>
+              <h3 className="text-xl font-bold text-red-500 mb-4">FilmSlate</h3>
               <p className="text-gray-400 text-sm">
                 Discover and stream the best independent films from around the world.
               </p>
@@ -463,12 +464,12 @@ export default function IndieFilmApp() {
               <h4 className="font-semibold mb-4">Account</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li>
-                  <Link href="/account" className="hover:text-white transition-colors">
+                  <Link href="/profile" className="hover:text-white transition-colors">
                     My Profile
                   </Link>
                 </li>
                 <li>
-                  <Link href="/account" className="hover:text-white transition-colors">
+                  <Link href="/settings" className="hover:text-white transition-colors">
                     Settings
                   </Link>
                 </li>

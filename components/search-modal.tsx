@@ -18,12 +18,12 @@ interface Movie {
   id: number
   title: string
   year: number
-  rating: number // Now on a 1-5 scale
+  rating: number
   duration: string
   poster: string
   genres: string[]
   director: string
-  description?: string
+  description: string
 }
 
 const allMovies: Movie[] = [
@@ -31,7 +31,7 @@ const allMovies: Movie[] = [
     id: 1,
     title: "The Farewell",
     year: 2019,
-    rating: 4.1, // Original 8.2 / 2
+    rating: 8.2,
     duration: "100 min",
     poster: "/the-farewell-inspired-poster.png",
     genres: ["Drama", "Comedy"],
@@ -43,7 +43,7 @@ const allMovies: Movie[] = [
     id: 2,
     title: "Minari",
     year: 2020,
-    rating: 4.05, // Original 8.1 / 2
+    rating: 8.1,
     duration: "115 min",
     poster: "/minari-inspired-poster.png",
     genres: ["Drama"],
@@ -54,7 +54,7 @@ const allMovies: Movie[] = [
     id: 3,
     title: "Manchester by the Sea",
     year: 2016,
-    rating: 4.25, // Original 8.5 / 2
+    rating: 8.5,
     duration: "137 min",
     poster: "/manchester-by-the-sea-poster.png",
     genres: ["Drama"],
@@ -65,7 +65,7 @@ const allMovies: Movie[] = [
     id: 4,
     title: "Lady Bird",
     year: 2017,
-    rating: 4.15, // Original 8.3 / 2
+    rating: 8.3,
     duration: "94 min",
     poster: "/lady-bird-poster.png",
     genres: ["Comedy", "Drama"],
@@ -76,7 +76,7 @@ const allMovies: Movie[] = [
     id: 5,
     title: "Moonlight",
     year: 2016,
-    rating: 4.35, // Original 8.7 / 2
+    rating: 8.7,
     duration: "111 min",
     poster: "/moonlight-poster.png",
     genres: ["Drama"],
@@ -88,7 +88,7 @@ const allMovies: Movie[] = [
     id: 6,
     title: "Nomadland",
     year: 2020,
-    rating: 4.0, // Original 8.0 / 2
+    rating: 8.0,
     duration: "107 min",
     poster: "/nomadland-poster.png",
     genres: ["Drama"],
@@ -100,7 +100,7 @@ const allMovies: Movie[] = [
     id: 7,
     title: "The Florida Project",
     year: 2017,
-    rating: 4.05, // Original 8.1 / 2
+    rating: 8.1,
     duration: "111 min",
     poster: "/florida-project-inspired-poster.png",
     genres: ["Drama"],
@@ -112,7 +112,7 @@ const allMovies: Movie[] = [
     id: 8,
     title: "Room",
     year: 2015,
-    rating: 4.1, // Original 8.2 / 2
+    rating: 8.2,
     duration: "118 min",
     poster: "/room-movie-poster.png",
     genres: ["Drama", "Thriller"],
@@ -124,7 +124,7 @@ const allMovies: Movie[] = [
     id: 9,
     title: "Her",
     year: 2013,
-    rating: 4.0, // Original 8.0 / 2
+    rating: 8.0,
     duration: "126 min",
     poster: "/her-movie-poster.png",
     genres: ["Drama", "Romance", "Sci-Fi"],
@@ -136,7 +136,7 @@ const allMovies: Movie[] = [
     id: 10,
     title: "Call Me By Your Name",
     year: 2017,
-    rating: 4.2, // Original 8.4 / 2
+    rating: 8.4,
     duration: "132 min",
     poster: "/call-me-by-your-name-poster.png",
     genres: ["Drama", "Romance"],
@@ -148,7 +148,7 @@ const allMovies: Movie[] = [
     id: 11,
     title: "Parasite",
     year: 2019,
-    rating: 4.45, // Original 8.9 / 2
+    rating: 8.9,
     duration: "132 min",
     poster: "/placeholder.svg?height=300&width=200",
     genres: ["Thriller", "Drama", "Comedy"],
@@ -160,7 +160,7 @@ const allMovies: Movie[] = [
     id: 12,
     title: "The Lighthouse",
     year: 2019,
-    rating: 4.05, // Original 8.1 / 2
+    rating: 8.1,
     duration: "109 min",
     poster: "/placeholder.svg?height=300&width=200",
     genres: ["Horror", "Drama"],
@@ -172,7 +172,7 @@ const allMovies: Movie[] = [
     id: 13,
     title: "Midsommar",
     year: 2019,
-    rating: 3.9, // Original 7.8 / 2
+    rating: 7.8,
     duration: "148 min",
     poster: "/placeholder.svg?height=300&width=200",
     genres: ["Horror", "Drama"],
@@ -183,7 +183,7 @@ const allMovies: Movie[] = [
     id: 14,
     title: "The Witch",
     year: 2015,
-    rating: 3.75, // Original 7.5 / 2
+    rating: 7.5,
     duration: "92 min",
     poster: "/placeholder.svg?height=300&width=200",
     genres: ["Horror", "Drama"],
@@ -195,7 +195,7 @@ const allMovies: Movie[] = [
     id: 15,
     title: "Uncut Gems",
     year: 2019,
-    rating: 4.1, // Original 8.2 / 2
+    rating: 8.2,
     duration: "135 min",
     poster: "/placeholder.svg?height=300&width=200",
     genres: ["Thriller", "Drama"],
@@ -207,7 +207,7 @@ const allMovies: Movie[] = [
     id: 16,
     title: "Everything Everywhere All at Once",
     year: 2022,
-    rating: 4.45, // Original 8.9 / 2
+    rating: 8.9,
     duration: "139 min",
     poster: "/placeholder.svg?height=300&width=200",
     genres: ["Sci-Fi", "Comedy", "Drama"],
@@ -219,7 +219,7 @@ const allMovies: Movie[] = [
     id: 17,
     title: "Won't You Be My Neighbor?",
     year: 2018,
-    rating: 4.25, // Original 8.5 / 2
+    rating: 8.5,
     duration: "94 min",
     poster: "/placeholder.svg?height=300&width=200",
     genres: ["Documentary"],
@@ -230,7 +230,7 @@ const allMovies: Movie[] = [
     id: 18,
     title: "Free Solo",
     year: 2018,
-    rating: 4.1, // Original 8.2 / 2
+    rating: 8.2,
     duration: "100 min",
     poster: "/placeholder.svg?height=300&width=200",
     genres: ["Documentary"],
@@ -242,7 +242,7 @@ const allMovies: Movie[] = [
     id: 19,
     title: "Three Identical Strangers",
     year: 2018,
-    rating: 4.05, // Original 8.1 / 2
+    rating: 8.1,
     duration: "96 min",
     poster: "/placeholder.svg?height=300&width=200",
     genres: ["Documentary"],
@@ -254,7 +254,7 @@ const allMovies: Movie[] = [
     id: 20,
     title: "The Act of Killing",
     year: 2012,
-    rating: 4.1, // Original 8.2 / 2
+    rating: 8.2,
     duration: "117 min",
     poster: "/placeholder.svg?height=300&width=200",
     genres: ["Documentary"],
@@ -266,7 +266,7 @@ const allMovies: Movie[] = [
     id: 21,
     title: "Honeyland",
     year: 2019,
-    rating: 4.0, // Original 8.0 / 2
+    rating: 8.0,
     duration: "85 min",
     poster: "/placeholder.svg?height=300&width=200",
     genres: ["Documentary"],
@@ -497,7 +497,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedGenre, setSelectedGenre] = useState<string>("all")
   const [selectedDecade, setSelectedDecade] = useState<string>("all")
-  const [ratingRange, setRatingRange] = useState([0, 5]) // Changed max to 5
+  const [ratingRange, setRatingRange] = useState([0, 10])
   const [showFilters, setShowFilters] = useState(false)
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null)
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
@@ -515,7 +515,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       const matchesSearch =
         movie.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         movie.director.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        movie.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        movie.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         movie.genres.some((genre) => genre.toLowerCase().includes(searchQuery.toLowerCase()))
 
       const matchesGenre = selectedGenre === "all" || movie.genres.includes(selectedGenre)
@@ -578,7 +578,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const clearFilters = () => {
     setSelectedGenre("all")
     setSelectedDecade("all")
-    setRatingRange([0, 5]) // Changed max to 5
+    setRatingRange([0, 10])
     setShowOnlyRated(false)
     setMinUserRating([1])
     setSortBy("relevance")
@@ -588,7 +588,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     selectedGenre !== "all" ||
     selectedDecade !== "all" ||
     ratingRange[0] > 0 ||
-    ratingRange[1] < 5 || // Changed max to 5
+    ratingRange[1] < 10 ||
     showOnlyRated ||
     sortBy !== "relevance"
 
@@ -603,7 +603,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           <div className="flex-shrink-0 space-y-6 p-6 border-b border-gray-800">
             {/* Search Input */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <Input
                 placeholder="Search by title, director, genre, or description..."
                 value={searchQuery}
@@ -628,7 +628,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                       [
                         selectedGenre !== "all",
                         selectedDecade !== "all",
-                        ratingRange[0] > 0 || ratingRange[1] < 5, // Changed max to 5
+                        ratingRange[0] > 0 || ratingRange[1] < 10,
                         showOnlyRated,
                         sortBy !== "relevance",
                       ].filter(Boolean).length
@@ -711,7 +711,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     <Slider
                       value={ratingRange}
                       onValueChange={setRatingRange}
-                      max={5} // Changed max to 5
+                      max={10}
                       min={0}
                       step={0.1}
                       className="mt-2"
@@ -816,8 +816,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             <div className="flex items-center space-x-4 mb-2">
                               <div className="flex items-center space-x-1">
                                 <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                                <span className="text-sm">{movie.rating.toFixed(1)}</span>{" "}
-                                {/* Display with 1 decimal */}
+                                <span className="text-sm">{movie.rating}</span>
                                 <span className="text-xs text-gray-500">community</span>
                               </div>
                               {userRating > 0 && (
@@ -855,9 +854,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                 </Badge>
                               ))}
                             </div>
-                            {movie.description && (
-                              <p className="text-gray-400 text-sm line-clamp-2">{movie.description}</p>
-                            )}
+                            <p className="text-gray-400 text-sm line-clamp-2">{movie.description}</p>
                           </div>
                         </div>
                       )
