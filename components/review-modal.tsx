@@ -178,9 +178,15 @@ export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
           <Separator className="bg-gray-700 my-6" />
 
 
+
+
+          <h3 className="text-xl font-bold mb-4">Community Reviews</h3>
+
+            <h3 className="text-lg font-semibold mb-3">The film slate community has given this an average rating of 4.3</h3>
+
           {/* Your Rating */}
           <div className="bg-gray-900 rounded-lg p-4">
-            <h3 className="text-lg font-semibold mb-3">Rate this film</h3>
+            <h3 className="text-xl font-semibold mb-3">Your rating</h3>
             <div className="flex items-center space-x-4">
               <StarRating rating={userRating} onRatingChange={handleRatingChange} size="large" />
               {userRating > 0 && (
@@ -191,7 +197,6 @@ export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
             </div>
           </div>
 
-          <h3 className="text-xl font-bold mb-4">Community Reviews</h3>
           <div className="space-y-6">
             {communityReviews.map((review) => (
               <Card key={review.id} className="bg-gray-800 border-gray-700">
