@@ -95,7 +95,7 @@ const founderReviews: Record<
   1: {
     title: "The Farewell: A Masterclass in Cultural Storytelling",
     excerpt:
-      "Lulu Wang's deeply personal film about family, lies, and love transcends cultural boundaries while remaining authentically Chinese-American. What struck me most during my third viewing was how Wang uses silence and subtext to convey more emotion than most films achieve with grand gestures. The grandmother's performance is nothing short of luminous, and the film's exploration of how we protect those we love—even through deception—feels both universal and deeply specific. This is exactly the kind of nuanced, character-driven storytelling that IndieStream was built to celebrate.",
+      "Lulu Wang's deeply personal film about family, lies, and love transcends cultural boundaries while remaining authentically Chinese-American. What struck me most during my third viewing was how Wang uses silence and subtext to convey more emotion than most films achieve with grand gestures. The grandmother's performance is nothing short of luminous, and the film's exploration of how we protect those we love—even through deception—feels both universal and deeply specific. This is exactly the kind of nuanced, character-driven storytelling that FilmSlate was built to celebrate.",
     date: "2024-01-20",
     readTime: "4 min read",
     fullPostUrl: "/blog/the-farewell-cultural-storytelling",

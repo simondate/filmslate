@@ -217,7 +217,7 @@ export default function IndieFilmApp() {
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center space-x-8">
             <Link href="/" className="text-2xl font-bold text-red-500">
-              IndieStream
+              FilmSlate
             </Link>
             <nav className="hidden md:flex space-x-6">
               <Link href="/" className="hover:text-gray-300 transition-colors">
@@ -368,7 +368,7 @@ export default function IndieFilmApp() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-xl font-bold text-red-500 mb-4">IndieStream</h3>
+              <h3 className="text-xl font-bold text-red-500 mb-4">FilmSlate</h3>
               <p className="text-gray-400 text-sm">
                 Discover and stream the best independent films from around the world.
               </p>
@@ -450,7 +450,7 @@ export default function IndieFilmApp() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-            <p>&copy; 2024 IndieStream. All rights reserved.</p>
+            <p>&copy; 2024 FilmSlate. All rights reserved.</p>
           </div>
         </div>
       </footer>
