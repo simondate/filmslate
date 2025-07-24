@@ -1,202 +1,232 @@
 "use client"
+
+import { Star, ThumbsUp, Calendar } from "lucide-react"
 import Image from "next/image"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Star, ThumbsUp, ThumbsDown, MessageSquare, Share2, X } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useState } from "react"
+
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
-import { Card, CardContent } from "@/components/ui/card"
+import { StarRating } from "@/components/star-rating"
 
 interface ReviewModalProps {
-  movie: {
-    id: number
-    title: string
-    year: number
-    rating: number
-    duration: string
-    poster: string
-    genres: string[]
-    director: string
-    description: string
-  } | null
+  movie: any
   isOpen: boolean
   onClose: () => void
 }
 
+const externalReviews = [
+  {
+    id: 1,
+    source: "The Guardian",
+    rating: 4,
+    excerpt: "A masterpiece of storytelling that transcends cultural boundaries...",
+    author: "Peter Bradshaw",
+    date: "2019-08-15",
+    fullReview:
+      "This is a film that speaks to the universal experience of family, loss, and the lies we tell to protect those we love. Lulu Wang has crafted something truly special here.",
+  },
+  {
+    id: 2,
+    source: "Rolling Stone",
+    rating: 4.5,
+    excerpt: "Emotionally devastating and beautifully crafted...",
+    author: "David Fear",
+    date: "2019-07-20",
+    fullReview:
+      "The Farewell is a quiet masterpiece that finds profound meaning in the smallest moments. Wang's direction is assured and the performances are uniformly excellent.",
+  },
+  {
+    id: 3,
+    source: "Variety",
+    rating: 4,
+    excerpt: "A deeply personal story told with universal appeal...",
+    author: "Jessica Kiang",
+    date: "2019-01-25",
+    fullReview:
+      "What could have been a simple culture-clash comedy becomes something much more profound in Wang's capable hands. This is filmmaking at its most empathetic.",
+  },
+]
+
+const communityReviews = [
+  {
+    id: 1,
+    user: {
+      name: "Sarah Chen",
+      avatar: "/placeholder.svg?height=40&width=40",
+      initials: "SC",
+    },
+    rating: 5,
+    date: "2024-01-15",
+    likes: 24,
+    review:
+      "This film hit me right in the feels. As someone with a similar cultural background, I found myself crying throughout the entire movie. The way it handles family dynamics and cultural differences is just perfect. Awkwafina's performance is surprisingly nuanced and heartfelt.",
+  },
+  {
+    id: 2,
+    user: {
+      name: "Michael Rodriguez",
+      avatar: "/placeholder.svg?height=40&width=40",
+      initials: "MR",
+    },
+    rating: 4,
+    date: "2024-01-10",
+    likes: 18,
+    review:
+      "Beautiful storytelling that doesn't rely on stereotypes. The grandmother's performance is absolutely incredible - she brings such warmth and authenticity to the role. The film's exploration of truth vs. kindness is thought-provoking.",
+  },
+  {
+    id: 3,
+    user: {
+      name: "Emma Thompson",
+      avatar: "/placeholder.svg?height=40&width=40",
+      initials: "ET",
+    },
+    rating: 5,
+    date: "2024-01-08",
+    likes: 31,
+    review:
+      "One of the best films I've seen this year. The way it balances humor and heartbreak is masterful. Every scene feels authentic and lived-in. This is the kind of intimate, character-driven storytelling that we need more of in cinema.",
+  },
+  {
+    id: 4,
+    user: {
+      name: "David Kim",
+      avatar: "/placeholder.svg?height=40&width=40",
+      initials: "DK",
+    },
+    rating: 4,
+    date: "2024-01-05",
+    likes: 12,
+    review:
+      "Incredibly moving film about family, culture, and the complexity of love. The performances are all top-notch, and the direction is subtle yet powerful. It's a quiet film that speaks volumes.",
+  },
+]
+
 export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
+  const [likedReviews, setLikedReviews] = useState<number[]>([])
+
   if (!movie) return null
 
-  const externalReviews = [
-    {
-      source: "Rotten Tomatoes",
-      score: "98%",
-      link: "#",
-      summary:
-        "A dazzling, heartfelt, and utterly original adventure that redefines the multiverse concept with emotional depth.",
-    },
-    {
-      source: "Metacritic",
-      score: "89/100",
-      link: "#",
-      summary: "A chaotic masterpiece that blends genres with incredible skill and delivers a powerful message.",
-    },
-    {
-      source: "IMDb",
-      score: "8.7/10",
-      link: "#",
-      summary: "An exhilarating ride that is both hilarious and deeply moving, with standout performances.",
-    },
-  ]
-
-  const communityReviews = [
-    {
-      id: 1,
-      user: "IndieWatcher22",
-      userAvatar: "/user-avatar-1.png",
-      rating: 5,
-      date: "2 days ago",
-      reviewText:
-        "Absolutely blown away! This film is a rollercoaster of emotions and ideas. The performances were incredible, especially Michelle Yeoh. A must-watch for anyone looking for something truly unique.",
-      likes: 15,
-      dislikes: 1,
-    },
-    {
-      id: 2,
-      user: "FilmBuffette",
-      userAvatar: "/diverse-user-avatar-set-2.png",
-      rating: 4,
-      date: "1 week ago",
-      reviewText:
-        "A wild ride! It's visually stunning and incredibly creative. Some parts felt a bit overwhelming, but overall, it's a brilliant and thought-provoking film that stays with you.",
-      likes: 8,
-      dislikes: 0,
-    },
-    {
-      id: 3,
-      user: "CinemaLover",
-      userAvatar: "/diverse-user-avatars-3.png",
-      rating: 5,
-      date: "2 weeks ago",
-      reviewText:
-        "One of the best films I've seen in years. It's funny, sad, action-packed, and surprisingly philosophical. The Daniels are geniuses. Highly recommend!",
-      likes: 22,
-      dislikes: 2,
-    },
-  ]
-
-  const renderStars = (rating: number) => {
-    const stars = []
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <Star key={i} className={`w-4 h-4 ${i <= rating ? "text-yellow-400 fill-current" : "text-gray-500"}`} />,
-      )
-    }
-    return stars
+  const toggleLike = (reviewId: number) => {
+    setLikedReviews((prev) => (prev.includes(reviewId) ? prev.filter((id) => id !== reviewId) : [...prev, reviewId]))
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl bg-gray-900 text-white p-0 border-gray-700">
-        <DialogHeader className="relative h-48 md:h-64 overflow-hidden rounded-t-lg">
-          <Image
-            src={movie.poster || "/placeholder.svg"}
-            alt={movie.title}
-            fill
-            className="object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent" />
-          <div className="absolute bottom-0 left-0 p-6 z-10">
-            <DialogTitle className="text-3xl font-bold text-white">{movie.title}</DialogTitle>
-            <DialogDescription className="text-gray-300">
-              {movie.year} • {movie.duration} • {movie.director}
-            </DialogDescription>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {movie.genres.map((genre) => (
-                <Badge key={genre} variant="secondary" className="bg-white/20 text-white border-none">
-                  {genre}
-                </Badge>
-              ))}
-            </div>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-4 right-4 text-white hover:bg-white/20 z-20"
-            onClick={onClose}
-          >
-            <X className="w-6 h-6" />
-          </Button>
+      <DialogContent className="bg-gray-900 border-gray-800 text-white max-w-4xl max-h-[90vh] overflow-hidden">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold">{movie.title}</DialogTitle>
         </DialogHeader>
 
-        <div className="p-6 max-h-[calc(100vh-200px)] overflow-y-auto custom-scrollbar">
-          <h3 className="text-xl font-bold mb-4">Synopsis</h3>
-          <p className="text-gray-300 mb-6">{movie.description}</p>
-
-          <Separator className="bg-gray-700 my-6" />
-
-          <h3 className="text-xl font-bold mb-4">External Reviews</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            {externalReviews.map((review, index) => (
-              <Card key={index} className="bg-gray-800 border-gray-700">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-semibold text-gray-200">{review.source}</span>
-                    <Badge variant="secondary" className="bg-green-600/20 text-green-400 border-none">
-                      {review.score}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-gray-400 line-clamp-3">{review.summary}</p>
-                  <Button variant="link" className="p-0 h-auto text-purple-400 hover:text-purple-300 mt-2">
-                    Read Full Review
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+        <div className="flex flex-col md:flex-row gap-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+          {/* Movie Info */}
+          <div className="md:w-1/3 flex-shrink-0">
+            <div className="relative w-full h-96 mb-4">
+              <Image
+                src={movie.poster || "/placeholder.svg"}
+                alt={movie.title}
+                fill
+                className="object-cover rounded-lg"
+              />
+            </div>
+            <div className="space-y-3">
+              <div>
+                <h3 className="font-semibold text-lg">{movie.title}</h3>
+                <p className="text-gray-400">Directed by {movie.director}</p>
+              </div>
+              <div className="flex items-center space-x-4 text-sm text-gray-300">
+                <span>{movie.year}</span>
+                <span>{movie.duration}</span>
+                <div className="flex items-center space-x-1">
+                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                  <span>{movie.rating.toFixed(1)}</span>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {movie.genres.map((genre: string) => (
+                  <Badge key={genre} variant="secondary" className="bg-gray-800 text-gray-300 border-none">
+                    {genre}
+                  </Badge>
+                ))}
+              </div>
+              <p className="text-sm text-gray-300 leading-relaxed">{movie.description}</p>
+            </div>
           </div>
 
-          <Separator className="bg-gray-700 my-6" />
-
-          <h3 className="text-xl font-bold mb-4">Community Reviews</h3>
-          <div className="space-y-6">
-            {communityReviews.map((review) => (
-              <Card key={review.id} className="bg-gray-800 border-gray-700">
-                <CardContent className="p-4">
-                  <div className="flex items-start space-x-4 mb-3">
-                    <Avatar className="w-10 h-10">
-                      <AvatarImage src={review.userAvatar || "/placeholder.svg"} />
-                      <AvatarFallback>{review.user.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold text-gray-200">{review.user}</span>
-                        <span className="text-xs text-gray-500">{review.date}</span>
+          {/* Reviews */}
+          <div className="md:w-2/3 space-y-6">
+            {/* External Reviews */}
+            <div>
+              <h3 className="text-xl font-bold mb-4">Critics Reviews</h3>
+              <div className="space-y-4">
+                {externalReviews.map((review) => (
+                  <div key={review.id} className="bg-gray-800/50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center space-x-3">
+                        <span className="font-semibold text-red-400">{review.source}</span>
+                        <StarRating rating={review.rating} size="sm" />
                       </div>
-                      <div className="flex items-center space-x-1 mt-1">{renderStars(review.rating)}</div>
-                      <p className="text-gray-300 mt-2">{review.reviewText}</p>
-                      <div className="flex items-center space-x-4 mt-3 text-gray-400 text-sm">
-                        <Button variant="ghost" size="sm" className="flex items-center space-x-1 hover:text-purple-400">
-                          <ThumbsUp className="w-4 h-4" />
-                          <span>{review.likes}</span>
-                        </Button>
-                        <Button variant="ghost" size="sm" className="flex items-center space-x-1 hover:text-purple-400">
-                          <ThumbsDown className="w-4 h-4" />
-                          <span>{review.dislikes}</span>
-                        </Button>
-                        <Button variant="ghost" size="sm" className="flex items-center space-x-1 hover:text-purple-400">
-                          <MessageSquare className="w-4 h-4" />
-                          <span>Reply</span>
-                        </Button>
-                        <Button variant="ghost" size="sm" className="flex items-center space-x-1 hover:text-purple-400">
-                          <Share2 className="w-4 h-4" />
-                          <span>Share</span>
-                        </Button>
+                      <span className="text-xs text-gray-400">{review.date}</span>
+                    </div>
+                    <p className="text-gray-300 text-sm mb-2">"{review.excerpt}"</p>
+                    <p className="text-gray-400 text-sm">{review.fullReview}</p>
+                    <p className="text-xs text-gray-500 mt-2">— {review.author}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <Separator className="bg-gray-800" />
+
+            {/* Community Reviews */}
+            <div>
+              <h3 className="text-xl font-bold mb-4">Community Reviews</h3>
+              <div className="space-y-4">
+                {communityReviews.map((review) => (
+                  <div key={review.id} className="bg-gray-800/30 rounded-lg p-4">
+                    <div className="flex items-start space-x-3">
+                      <Avatar className="w-10 h-10">
+                        <AvatarImage src={review.user.avatar || "/placeholder.svg"} />
+                        <AvatarFallback className="bg-gray-700 text-white text-sm">
+                          {review.user.initials}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center space-x-3">
+                            <span className="font-semibold text-white">{review.user.name}</span>
+                            <StarRating rating={review.rating} size="sm" />
+                          </div>
+                          <div className="flex items-center space-x-2 text-xs text-gray-400">
+                            <Calendar className="w-3 h-3" />
+                            <span>{review.date}</span>
+                          </div>
+                        </div>
+                        <p className="text-gray-300 text-sm leading-relaxed mb-3">{review.review}</p>
+                        <div className="flex items-center space-x-4">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className={`text-xs ${
+                              likedReviews.includes(review.id)
+                                ? "text-red-400 hover:text-red-300"
+                                : "text-gray-400 hover:text-gray-300"
+                            }`}
+                            onClick={() => toggleLike(review.id)}
+                          >
+                            <ThumbsUp className="w-3 h-3 mr-1" />
+                            {review.likes + (likedReviews.includes(review.id) ? 1 : 0)}
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </DialogContent>

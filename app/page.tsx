@@ -317,7 +317,7 @@ export default function IndieFilmApp() {
             </button>
             <Link href="/account">
               <Avatar className="w-8 h-8 cursor-pointer hover:ring-2 hover:ring-purple-800 transition-all">
-                <AvatarImage src="/user-profile-illustration.png" />
+                <AvatarImage src="/placeholder.svg?height=32&width=32" />
                 <AvatarFallback>U</AvatarFallback>
               </Avatar>
             </Link>

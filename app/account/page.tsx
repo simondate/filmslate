@@ -1,434 +1,475 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
+import { ArrowLeft, Crown, Star, Clock, Calendar, Heart, CreditCard, Bell, User, Check, Zap } from "lucide-react"
 import Image from "next/image"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from "next/link"
+
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Film, MessageSquare, Clock, Calendar, CheckCircle, XCircle } from "lucide-react"
+import { Separator } from "@/components/ui/separator"
+
+const subscriptionPlans = [
+  {
+    name: "Free",
+    price: "$0",
+    period: "forever",
+    description: "Perfect for casual viewers",
+    features: [
+      "Limited film selection",
+      "Standard definition streaming",
+      "Ads between films",
+      "Basic recommendations",
+      "Community reviews",
+    ],
+    current: true,
+    popular: false,
+    buttonText: "Current Plan",
+    buttonVariant: "outline" as const,
+  },
+  {
+    name: "FilmSlate Pro",
+    price: "$9.99",
+    period: "month",
+    description: "For serious indie film enthusiasts",
+    features: [
+      "Full film library access",
+      "HD streaming quality",
+      "Ad-free experience",
+      "Advanced recommendations",
+      "Early access to new releases",
+      "Download for offline viewing",
+      "Priority customer support",
+    ],
+    current: false,
+    popular: true,
+    buttonText: "Upgrade to Pro",
+    buttonVariant: "default" as const,
+  },
+  {
+    name: "FilmSlate Premium",
+    price: "$19.99",
+    period: "month",
+    description: "The ultimate indie film experience",
+    features: [
+      "Everything in Pro",
+      "4K Ultra HD streaming",
+      "Director's commentary tracks",
+      "Behind-the-scenes content",
+      "Exclusive filmmaker interviews",
+      "Film festival live streams",
+      "Curator's personal picks",
+      "Advanced analytics dashboard",
+    ],
+    current: false,
+    popular: false,
+    buttonText: "Upgrade to Premium",
+    buttonVariant: "default" as const,
+  },
+]
+
+const userStats = {
+  filmsWatched: 127,
+  reviewsWritten: 23,
+  watchTime: "156 hours",
+  memberSince: "March 2023",
+  favoriteGenres: ["Drama", "Documentary", "Art House"],
+}
 
 export default function AccountPage() {
-  const [currentPlan, setCurrentPlan] = useState("free") // 'free', 'pro', 'premium'
-
-  const handleUpgrade = (plan: string) => {
-    setCurrentPlan(plan)
-    alert(`You have successfully upgraded to ${plan.toUpperCase()}!`)
-  }
+  const [activeTab, setActiveTab] = useState("overview")
+  const [notifications, setNotifications] = useState({
+    newReleases: true,
+    recommendations: true,
+    reviews: false,
+    newsletter: true,
+  })
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Header for Account Page */}
-      <header className="fixed top-0 w-full z-50 bg-gradient-to-b from-black/90 to-transparent backdrop-blur-md border-b border-gray-800/50">
+      {/* Header */}
+      <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-gray-800">
         <div className="flex items-center justify-between px-6 py-4">
-          <div className="flex items-center space-x-8">
-            <Link href="/" className="text-2xl font-bold text-purple-800 flex items-center gap-2">
-              <Image src="/film-reel-icon.png" alt="FilmSlate Logo" width={32} height={32} className="rounded-md" />
-              FilmSlate
-            </Link>
-          </div>
           <div className="flex items-center space-x-4">
-            <Link href="/">
-              <Button variant="ghost" className="text-gray-400 hover:text-white">
-                Back to Home
-              </Button>
+            <Link href="/" className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
+              <ArrowLeft className="w-5 h-5" />
+              <span>Back to FilmSlate</span>
             </Link>
-            <Avatar className="w-8 h-8">
-              <AvatarImage src="/user-profile-illustration.png" />
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
           </div>
+          <Link href="/" className="text-2xl font-bold text-purple-800 flex items-center gap-2">
+            <Image src="/film-reel-icon.png" alt="FilmSlate Logo" width={32} height={32} className="rounded-md" />
+            FilmSlate
+          </Link>
+          <div className="w-32" /> {/* Spacer for centering */}
         </div>
       </header>
 
-      <main className="pt-24 pb-12 px-6 max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">My Account</h1>
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        {/* Page Title */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2">My Account</h1>
+          <p className="text-gray-400">Manage your FilmSlate experience</p>
+        </div>
 
-        <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-gray-800">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-purple-800 data-[state=active]:text-white">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
+          <TabsList className="grid w-full grid-cols-4 bg-gray-900 border border-gray-800">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-purple-800">
               Overview
             </TabsTrigger>
-            <TabsTrigger
-              value="subscription"
-              className="data-[state=active]:bg-purple-800 data-[state=active]:text-white"
-            >
+            <TabsTrigger value="subscription" className="data-[state=active]:bg-purple-800">
               Subscription
             </TabsTrigger>
-            <TabsTrigger value="settings" className="data-[state=active]:bg-purple-800 data-[state=active]:text-white">
+            <TabsTrigger value="settings" className="data-[state=active]:bg-purple-800">
               Settings
             </TabsTrigger>
-            <TabsTrigger value="billing" className="data-[state=active]:bg-purple-800 data-[state=active]:text-white">
+            <TabsTrigger value="billing" className="data-[state=active]:bg-purple-800">
               Billing
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="mt-6">
-            <Card className="bg-gray-900 border-gray-700 text-white">
-              <CardHeader>
-                <CardTitle className="text-2xl">Welcome, FilmFanatic!</CardTitle>
-                <CardDescription className="text-gray-400">
-                  Manage your profile and subscription details.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center space-x-4">
-                  <Avatar className="w-20 h-20">
-                    <AvatarImage src="/user-profile-illustration.png" />
-                    <AvatarFallback>FF</AvatarFallback>
+          {/* Overview Tab */}
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Profile Card */}
+              <Card className="bg-gray-900 border-gray-800">
+                <CardHeader className="text-center">
+                  <Avatar className="w-24 h-24 mx-auto mb-4">
+                    <AvatarImage src="/placeholder.svg?height=96&width=96" />
+                    <AvatarFallback className="text-2xl">JD</AvatarFallback>
                   </Avatar>
-                  <div>
-                    <p className="text-xl font-semibold">FilmFanatic</p>
-                    <p className="text-gray-400">filmfanatic@example.com</p>
-                    <Badge variant="secondary" className="mt-2 bg-purple-800/20 text-purple-300 border-purple-800/30">
-                      {currentPlan === "free"
-                        ? "Free Plan"
-                        : currentPlan === "pro"
-                          ? "FilmSlate Pro"
-                          : "FilmSlate Premium"}
-                    </Badge>
-                  </div>
-                </div>
+                  <CardTitle>John Doe</CardTitle>
+                  <CardDescription>john.doe@email.com</CardDescription>
+                  <Badge variant="secondary" className="bg-gray-800 text-gray-300 mt-2">
+                    Free Member
+                  </Badge>
+                </CardHeader>
+              </Card>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Card className="bg-gray-800 border-gray-700">
-                    <CardContent className="p-4 flex items-center space-x-3">
-                      <Film className="w-6 h-6 text-purple-400" />
+              {/* Stats Cards */}
+              <div className="lg:col-span-2 grid grid-cols-2 gap-4">
+                <Card className="bg-gray-900 border-gray-800">
+                  <CardContent className="p-6">
+                    <div className="flex items-center space-x-3">
+                      <div className="p-2 bg-purple-800/20 rounded-lg">
+                        <Star className="w-6 h-6 text-purple-400" />
+                      </div>
                       <div>
-                        <p className="text-lg font-semibold">120</p>
+                        <p className="text-2xl font-bold">{userStats.filmsWatched}</p>
                         <p className="text-sm text-gray-400">Films Watched</p>
                       </div>
-                    </CardContent>
-                  </Card>
-                  <Card className="bg-gray-800 border-gray-700">
-                    <CardContent className="p-4 flex items-center space-x-3">
-                      <MessageSquare className="w-6 h-6 text-purple-400" />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gray-900 border-gray-800">
+                  <CardContent className="p-6">
+                    <div className="flex items-center space-x-3">
+                      <div className="p-2 bg-blue-600/20 rounded-lg">
+                        <Heart className="w-6 h-6 text-blue-400" />
+                      </div>
                       <div>
-                        <p className="text-lg font-semibold">45</p>
+                        <p className="text-2xl font-bold">{userStats.reviewsWritten}</p>
                         <p className="text-sm text-gray-400">Reviews Written</p>
                       </div>
-                    </CardContent>
-                  </Card>
-                  <Card className="bg-gray-800 border-gray-700">
-                    <CardContent className="p-4 flex items-center space-x-3">
-                      <Clock className="w-6 h-6 text-purple-400" />
-                      <div>
-                        <p className="text-lg font-semibold">250 hrs</p>
-                        <p className="text-sm text-gray-400">Total Watch Time</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                <div className="flex items-center space-x-3 text-gray-400">
-                  <Calendar className="w-5 h-5" />
-                  <p className="text-sm">Member since: January 2023</p>
-                </div>
-
-                {currentPlan === "free" && (
-                  <Card className="bg-gray-800 border-purple-800 border-2">
-                    <CardHeader>
-                      <CardTitle className="text-xl text-purple-300">Upgrade Your Experience!</CardTitle>
-                      <CardDescription className="text-gray-400">
-                        Unlock exclusive features like 4K streaming, offline downloads, and early access to indie
-                        premieres.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Button
-                        onClick={() => setCurrentPlan("subscription")}
-                        className="w-full bg-purple-800 hover:bg-purple-900"
-                      >
-                        Explore Plans
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="subscription" className="mt-6">
-            <Card className="bg-gray-900 border-gray-700 text-white">
-              <CardHeader>
-                <CardTitle className="text-2xl">Subscription Plans</CardTitle>
-                <CardDescription className="text-gray-400">Choose the plan that's right for you.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Free Plan */}
-                <Card
-                  className={`bg-gray-800 border-gray-700 ${currentPlan === "free" ? "border-2 border-purple-800" : ""}`}
-                >
-                  <CardHeader className="text-center">
-                    <CardTitle className="text-xl">Free</CardTitle>
-                    <CardDescription className="text-gray-400">Basic access to FilmSlate</CardDescription>
-                    <p className="text-4xl font-bold mt-4">
-                      $0<span className="text-lg text-gray-400">/month</span>
-                    </p>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <ul className="space-y-2 text-sm text-gray-300">
-                      <li className="flex items-center">
-                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
-                        SD Streaming
-                      </li>
-                      <li className="flex items-center">
-                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
-                        Limited Catalog
-                      </li>
-                      <li className="flex items-center">
-                        <XCircle className="w-4 h-4 mr-2 text-red-500" />
-                        No Offline Downloads
-                      </li>
-                      <li className="flex items-center">
-                        <XCircle className="w-4 h-4 mr-2 text-red-500" />
-                        Ads Included
-                      </li>
-                    </ul>
-                    <Button
-                      className="w-full mt-4"
-                      variant={currentPlan === "free" ? "secondary" : "default"}
-                      disabled={currentPlan === "free"}
-                      onClick={() => handleUpgrade("free")}
-                    >
-                      {currentPlan === "free" ? "Current Plan" : "Select Plan"}
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                {/* FilmSlate Pro Plan */}
-                <Card className={`bg-gray-800 border-purple-800 border-2 relative`}>
-                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-800 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                    Most Popular
-                  </Badge>
-                  <CardHeader className="text-center">
-                    <CardTitle className="text-xl text-purple-300">FilmSlate Pro</CardTitle>
-                    <CardDescription className="text-gray-400">Enhanced streaming experience</CardDescription>
-                    <p className="text-4xl font-bold mt-4">
-                      $9.99<span className="text-lg text-gray-400">/month</span>
-                    </p>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <ul className="space-y-2 text-sm text-gray-300">
-                      <li className="flex items-center">
-                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
-                        HD Streaming
-                      </li>
-                      <li className="flex items-center">
-                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
-                        Full Catalog Access
-                      </li>
-                      <li className="flex items-center">
-                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
-                        Offline Downloads
-                      </li>
-                      <li className="flex items-center">
-                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
-                        Ad-Free Viewing
-                      </li>
-                    </ul>
-                    <Button
-                      className="w-full mt-4 bg-purple-800 hover:bg-purple-900"
-                      disabled={currentPlan === "pro"}
-                      onClick={() => handleUpgrade("pro")}
-                    >
-                      {currentPlan === "pro" ? "Current Plan" : "Upgrade to Pro"}
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                {/* FilmSlate Premium Plan */}
-                <Card
-                  className={`bg-gray-800 border-gray-700 ${currentPlan === "premium" ? "border-2 border-purple-800" : ""}`}
-                >
-                  <CardHeader className="text-center">
-                    <CardTitle className="text-xl">FilmSlate Premium</CardTitle>
-                    <CardDescription className="text-gray-400">Ultimate cinematic experience</CardDescription>
-                    <p className="text-4xl font-bold mt-4">
-                      $14.99<span className="text-lg text-gray-400">/month</span>
-                    </p>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <ul className="space-y-2 text-sm text-gray-300">
-                      <li className="flex items-center">
-                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
-                        4K UHD Streaming
-                      </li>
-                      <li className="flex items-center">
-                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
-                        Full Catalog Access
-                      </li>
-                      <li className="flex items-center">
-                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
-                        Offline Downloads
-                      </li>
-                      <li className="flex items-center">
-                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
-                        Ad-Free Viewing
-                      </li>
-                      <li className="flex items-center">
-                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
-                        Early Access to Premieres
-                      </li>
-                    </ul>
-                    <Button
-                      className="w-full mt-4"
-                      variant={currentPlan === "premium" ? "secondary" : "default"}
-                      disabled={currentPlan === "premium"}
-                      onClick={() => handleUpgrade("premium")}
-                    >
-                      {currentPlan === "premium" ? "Current Plan" : "Upgrade to Premium"}
-                    </Button>
-                  </CardContent>
-                </Card>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="settings" className="mt-6">
-            <Card className="bg-gray-900 border-gray-700 text-white">
-              <CardHeader>
-                <CardTitle className="text-2xl">Account Settings</CardTitle>
-                <CardDescription className="text-gray-400">
-                  Manage your personal information and preferences.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="username" className="text-gray-300">
-                    Username
-                  </Label>
-                  <Input id="username" defaultValue="FilmFanatic" className="bg-gray-800 border-gray-700 text-white" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-gray-300">
-                    Email
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    defaultValue="filmfanatic@example.com"
-                    className="bg-gray-800 border-gray-700 text-white"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-gray-300">
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    defaultValue="********"
-                    className="bg-gray-800 border-gray-700 text-white"
-                  />
-                  <Button variant="link" className="p-0 h-auto text-purple-400 hover:text-purple-300">
-                    Change Password
-                  </Button>
-                </div>
-
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Notification Preferences</h3>
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="email-notifications" className="text-gray-300">
-                      Email Notifications
-                    </Label>
-                    <Switch id="email-notifications" defaultChecked className="data-[state=checked]:bg-purple-800" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="push-notifications" className="text-gray-300">
-                      Push Notifications
-                    </Label>
-                    <Switch id="push-notifications" className="data-[state=checked]:bg-purple-800" />
-                  </div>
-                </div>
-
-                <Button className="bg-purple-800 hover:bg-purple-900">Save Changes</Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="billing" className="mt-6">
-            <Card className="bg-gray-900 border-gray-700 text-white">
-              <CardHeader>
-                <CardTitle className="text-2xl">Billing Information</CardTitle>
-                <CardDescription className="text-gray-400">
-                  Manage your payment methods and view billing history.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold">Current Plan</h3>
-                  <p className="text-gray-300">
-                    You are currently on the{" "}
-                    <span className="font-bold text-purple-300">
-                      {currentPlan === "free"
-                        ? "Free Plan"
-                        : currentPlan === "pro"
-                          ? "FilmSlate Pro"
-                          : "FilmSlate Premium"}
-                    </span>
-                    .
-                  </p>
-                  {currentPlan !== "free" && (
-                    <p className="text-gray-400 text-sm">Next billing date: August 15, 2024</p>
-                  )}
-                  <Button
-                    variant="outline"
-                    className="border-purple-800 text-purple-300 hover:bg-purple-800/20 bg-transparent"
-                  >
-                    {currentPlan === "free" ? "Upgrade Now" : "Manage Subscription"}
-                  </Button>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold">Payment Method</h3>
-                  <Card className="bg-gray-800 border-gray-700 p-4 flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <Image src="/placeholder.svg?height=24&width=32&text=Visa" alt="Visa" width={32} height={24} />
-                      <p className="text-gray-300">Visa ending in **** 1234</p>
                     </div>
-                    <Button variant="link" className="p-0 h-auto text-purple-400 hover:text-purple-300">
-                      Edit
-                    </Button>
-                  </Card>
-                  <Button
-                    variant="outline"
-                    className="w-full border-gray-700 text-gray-300 hover:bg-gray-800/50 bg-transparent"
-                  >
-                    Add New Payment Method
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gray-900 border-gray-800">
+                  <CardContent className="p-6">
+                    <div className="flex items-center space-x-3">
+                      <div className="p-2 bg-green-600/20 rounded-lg">
+                        <Clock className="w-6 h-6 text-green-400" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold">{userStats.watchTime}</p>
+                        <p className="text-sm text-gray-400">Watch Time</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gray-900 border-gray-800">
+                  <CardContent className="p-6">
+                    <div className="flex items-center space-x-3">
+                      <div className="p-2 bg-orange-600/20 rounded-lg">
+                        <Calendar className="w-6 h-6 text-orange-400" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold">Mar 2023</p>
+                        <p className="text-sm text-gray-400">Member Since</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Favorite Genres */}
+            <Card className="bg-gray-900 border-gray-800">
+              <CardHeader>
+                <CardTitle>Favorite Genres</CardTitle>
+                <CardDescription>Based on your viewing history</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-2">
+                  {userStats.favoriteGenres.map((genre) => (
+                    <Badge
+                      key={genre}
+                      variant="secondary"
+                      className="bg-purple-800/20 text-purple-300 border-purple-800/30"
+                    >
+                      {genre}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Upgrade Prompt */}
+            <Card className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 border-purple-800/30">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2">Unlock Premium Features</h3>
+                    <p className="text-gray-300">
+                      Get access to our full library, HD streaming, and exclusive content.
+                    </p>
+                  </div>
+                  <Button onClick={() => setActiveTab("subscription")} className="bg-purple-800 hover:bg-purple-900">
+                    <Crown className="w-4 h-4 mr-2" />
+                    Upgrade Now
                   </Button>
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold">Billing History</h3>
-                  <p className="text-gray-400">No billing history available for the Free Plan.</p>
-                  {currentPlan !== "free" && (
-                    <ul className="space-y-2 text-sm text-gray-300">
-                      <li className="flex justify-between items-center">
-                        <span>July 15, 2024 - FilmSlate Pro</span>
-                        <Button variant="link" className="p-0 h-auto text-purple-400 hover:text-purple-300">
-                          Download Invoice
-                        </Button>
-                      </li>
-                      <li className="flex justify-between items-center">
-                        <span>June 15, 2024 - FilmSlate Pro</span>
-                        <Button variant="link" className="p-0 h-auto text-purple-400 hover:text-purple-300">
-                          Download Invoice
-                        </Button>
-                      </li>
-                    </ul>
+          {/* Subscription Tab */}
+          <TabsContent value="subscription" className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold mb-4">Choose Your Plan</h2>
+              <p className="text-gray-400 mb-8">Select the perfect plan for your indie film journey</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {subscriptionPlans.map((plan) => (
+                <Card
+                  key={plan.name}
+                  className={`relative bg-gray-900 border-gray-800 ${plan.popular ? "ring-2 ring-purple-800" : ""}`}
+                >
+                  {plan.popular && (
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                      <Badge className="bg-purple-800 text-white">Most Popular</Badge>
+                    </div>
                   )}
+                  <CardHeader className="text-center">
+                    <CardTitle className="text-xl">{plan.name}</CardTitle>
+                    <div className="mt-4">
+                      <span className="text-4xl font-bold">{plan.price}</span>
+                      <span className="text-gray-400">/{plan.period}</span>
+                    </div>
+                    <CardDescription className="mt-2">{plan.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <ul className="space-y-3">
+                      {plan.features.map((feature, index) => (
+                        <li key={index} className="flex items-center space-x-3">
+                          <Check className="w-4 h-4 text-green-400 flex-shrink-0" />
+                          <span className="text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Button
+                      variant={plan.buttonVariant}
+                      className={`w-full mt-6 ${plan.current ? "cursor-not-allowed" : ""} ${plan.buttonVariant === "default" ? "bg-purple-800 hover:bg-purple-900" : ""}`}
+                      disabled={plan.current}
+                    >
+                      {plan.current && <Check className="w-4 h-4 mr-2" />}
+                      {plan.buttonText}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* Settings Tab */}
+          <TabsContent value="settings" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Profile Information */}
+              <Card className="bg-gray-900 border-gray-800">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <User className="w-5 h-5" />
+                    <span>Profile Information</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Full Name</Label>
+                    <Input id="name" defaultValue="John Doe" className="bg-gray-800 border-gray-700" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      defaultValue="john.doe@email.com"
+                      className="bg-gray-800 border-gray-700"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="bio">Bio</Label>
+                    <Input
+                      id="bio"
+                      placeholder="Tell us about your film preferences..."
+                      className="bg-gray-800 border-gray-700"
+                    />
+                  </div>
+                  <Button className="bg-purple-800 hover:bg-purple-900">Save Changes</Button>
+                </CardContent>
+              </Card>
+
+              {/* Notification Preferences */}
+              <Card className="bg-gray-900 border-gray-800">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Bell className="w-5 h-5" />
+                    <span>Notifications</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">New Releases</p>
+                      <p className="text-sm text-gray-400">Get notified about new indie films</p>
+                    </div>
+                    <Switch
+                      checked={notifications.newReleases}
+                      onCheckedChange={(checked) => setNotifications((prev) => ({ ...prev, newReleases: checked }))}
+                    />
+                  </div>
+                  <Separator className="bg-gray-800" />
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Recommendations</p>
+                      <p className="text-sm text-gray-400">Personalized film suggestions</p>
+                    </div>
+                    <Switch
+                      checked={notifications.recommendations}
+                      onCheckedChange={(checked) => setNotifications((prev) => ({ ...prev, recommendations: checked }))}
+                    />
+                  </div>
+                  <Separator className="bg-gray-800" />
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Review Responses</p>
+                      <p className="text-sm text-gray-400">When someone responds to your reviews</p>
+                    </div>
+                    <Switch
+                      checked={notifications.reviews}
+                      onCheckedChange={(checked) => setNotifications((prev) => ({ ...prev, reviews: checked }))}
+                    />
+                  </div>
+                  <Separator className="bg-gray-800" />
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Newsletter</p>
+                      <p className="text-sm text-gray-400">Weekly indie film newsletter</p>
+                    </div>
+                    <Switch
+                      checked={notifications.newsletter}
+                      onCheckedChange={(checked) => setNotifications((prev) => ({ ...prev, newsletter: checked }))}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Billing Tab */}
+          <TabsContent value="billing" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Current Subscription */}
+              <Card className="bg-gray-900 border-gray-800">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Crown className="w-5 h-5" />
+                    <span>Current Subscription</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span>Plan</span>
+                    <Badge variant="secondary" className="bg-gray-800">
+                      Free
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Status</span>
+                    <Badge variant="secondary" className="bg-green-600/20 text-green-400">
+                      Active
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Next Billing</span>
+                    <span className="text-gray-400">N/A</span>
+                  </div>
+                  <Separator className="bg-gray-800" />
+                  <Button
+                    onClick={() => setActiveTab("subscription")}
+                    className="w-full bg-purple-800 hover:bg-purple-900"
+                  >
+                    <Zap className="w-4 h-4 mr-2" />
+                    Upgrade Plan
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Payment Method */}
+              <Card className="bg-gray-900 border-gray-800">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <CreditCard className="w-5 h-5" />
+                    <span>Payment Method</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="text-center py-8">
+                    <CreditCard className="w-12 h-12 text-gray-600 mx-auto mb-4" />
+                    <p className="text-gray-400">No payment method on file</p>
+                    <p className="text-sm text-gray-500 mt-2">Add a payment method to upgrade your plan</p>
+                  </div>
+                  <Button variant="outline" className="w-full border-gray-700 hover:bg-gray-800 bg-transparent">
+                    Add Payment Method
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Billing History */}
+            <Card className="bg-gray-900 border-gray-800">
+              <CardHeader>
+                <CardTitle>Billing History</CardTitle>
+                <CardDescription>Your payment history and invoices</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-8">
+                  <p className="text-gray-400">No billing history available</p>
+                  <p className="text-sm text-gray-500 mt-2">Your payment history will appear here once you upgrade</p>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
-      </main>
+      </div>
     </div>
   )
 }

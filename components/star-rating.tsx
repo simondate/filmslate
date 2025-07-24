@@ -1,25 +1,36 @@
+"use client"
+
 import { Star } from "lucide-react"
 
 interface StarRatingProps {
-  rating: number // Expected to be on a scale of 1 to 5
-  totalStars?: number
-  size?: number
-  className?: string
+  rating: number
+  maxRating?: number
+  size?: "sm" | "md" | "lg"
+  showNumber?: boolean
 }
 
-export function StarRating({ rating, totalStars = 5, size = 16, className }: StarRatingProps) {
+export function StarRating({ rating, maxRating = 5, size = "md", showNumber = false }: StarRatingProps) {
+  const sizeClasses = {
+    sm: "w-3 h-3",
+    md: "w-4 h-4",
+    lg: "w-5 h-5",
+  }
+
+  const stars = []
+
+  for (let i = 1; i <= maxRating; i++) {
+    stars.push(
+      <Star
+        key={i}
+        className={`${sizeClasses[size]} ${i <= rating ? "text-yellow-400 fill-current" : "text-gray-600"}`}
+      />,
+    )
+  }
+
   return (
-    <div className={`flex items-center ${className}`}>
-      {[...Array(totalStars)].map((_, index) => {
-        const starValue = index + 1
-        return (
-          <Star
-            key={index}
-            size={size}
-            className={`${starValue <= rating ? "text-yellow-400 fill-current" : "text-gray-500"}`}
-          />
-        )
-      })}
+    <div className="flex items-center space-x-1">
+      <div className="flex space-x-0.5">{stars}</div>
+      {showNumber && <span className="text-sm text-gray-400 ml-2">{rating.toFixed(1)}</span>}
     </div>
   )
 }
