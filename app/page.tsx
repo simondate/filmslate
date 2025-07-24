@@ -293,14 +293,10 @@ export default function IndieFilmApp() {
       <header className="fixed top-0 w-full z-50 bg-gradient-to-b from-black/90 to-transparent backdrop-blur-md border-b border-gray-800/50">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center space-x-8">
-            <Link href="/" className="text-2xl font-bold text-red-500">
+            <Link href="/" className="text-2xl font-bold text-purple-500">
               FilmSlate
             </Link>
-            <nav className="hidden md:flex space-x-6">
-              <Link href="/" className="hover:text-gray-300 transition-colors">
-                Home
               </Link>
-            </nav>
           </div>
           <div className="flex items-center space-x-4">
             <div className="relative hidden md:block">
