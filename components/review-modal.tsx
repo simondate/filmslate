@@ -7,6 +7,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Card, CardContent } from "@/components/ui/card"
+import { useState, useEffect } from "react"
+import { StarRating } from "./star-rating"
 
 interface ReviewModalProps {
   movie: {
@@ -85,6 +87,24 @@ export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
     },
   ]
 
+  const [userRating, setUserRating] = useState(0)
+
+  useEffect(() => {
+      if (movie && typeof window !== "undefined") {
+        const savedRating = localStorage.getItem(`rating-${movie.id}`)
+        setUserRating(savedRating ? Number.parseInt(savedRating) : 0)
+      }
+    }, [movie])
+
+  const handleRatingChange = (rating: number) => {
+    if (movie) {
+      setUserRating(rating)
+      if (typeof window !== "undefined") {
+        localStorage.setItem(`rating-${movie.id}`, rating.toString())
+      }
+    }
+  }
+
   const renderStars = (rating: number) => {
     const stars = []
     for (let i = 1; i <= 5; i++) {
@@ -156,6 +176,20 @@ export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
           </div>
 
           <Separator className="bg-gray-700 my-6" />
+
+
+          {/* Your Rating */}
+          <div className="bg-gray-900 rounded-lg p-4">
+            <h3 className="text-lg font-semibold mb-3">Rate this film</h3>
+            <div className="flex items-center space-x-4">
+              <StarRating rating={userRating} onRatingChange={handleRatingChange} size="large" />
+              {userRating > 0 && (
+                <span className="text-gray-400">
+                  You rated this {userRating} star{userRating !== 1 ? "s" : ""}
+                </span>
+              )}
+            </div>
+          </div>
 
           <h3 className="text-xl font-bold mb-4">Community Reviews</h3>
           <div className="space-y-6">
