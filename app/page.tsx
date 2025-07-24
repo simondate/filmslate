@@ -378,7 +378,6 @@ export default function IndieFilmApp() {
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
       <header className="fixed top-0 w-full z-50 bg-gradient-to-b from-black/90 to-transparent backdrop-blur-md border-b border-gray-800/50">
-      <header className="fixed top-0 w-full z-50 bg-gradient-to-b from-black/90 to-transparent backdrop-blur-md border-b border-gray-800/50">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center space-x-8">
             <Link href="/" className="text-2xl font-bold text-purple-500">
