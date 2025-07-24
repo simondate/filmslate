@@ -29,20 +29,20 @@ export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
 
   const externalReviews = [
     {
-      source: "Rotten Tomatoes",
+      source: "Sebastian",
       score: "98%",
       link: "#",
       summary:
         "A dazzling, heartfelt, and utterly original adventure that redefines the multiverse concept with emotional depth.",
     },
     {
-      source: "Metacritic",
+      source: "Robyn",
       score: "89/100",
       link: "#",
       summary: "A chaotic masterpiece that blends genres with incredible skill and delivers a powerful message.",
     },
     {
-      source: "IMDb",
+      source: "Farah",
       score: "8.7/10",
       link: "#",
       summary: "An exhilarating ride that is both hilarious and deeply moving, with standout performances.",
@@ -135,7 +135,7 @@ export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
 
           <Separator className="bg-gray-700 my-6" />
 
-          <h3 className="text-xl font-bold mb-4">External Reviews</h3>
+          <h3 className="text-xl font-bold mb-4">FilmSlate newsletter</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             {externalReviews.map((review, index) => (
               <Card key={index} className="bg-gray-800 border-gray-700">
