@@ -279,7 +279,7 @@ const featuredMovie = {
   duration: "139 min",
   description:
     "A mind-bending multiverse adventure that follows a Chinese-American laundromat owner who discovers she must connect with parallel universe versions of herself to prevent a powerful being from destroying everything.",
-  genres: ["Sci-Fi", "Comedy", "Drama"],
+  genres: ["Today's release", "Sci-Fi", "Comedy", "Drama"],
   backdrop: "/everything-everywhere-all-at-once-backdrop.png?height=600&width=1200",
 }
 
