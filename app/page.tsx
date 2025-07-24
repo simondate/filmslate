@@ -296,7 +296,6 @@ export default function IndieFilmApp() {
             <Link href="/" className="text-2xl font-bold text-purple-500">
               FilmSlate
             </Link>
-              </Link>
           </div>
           <div className="flex items-center space-x-4">
             <div className="relative hidden md:block">
