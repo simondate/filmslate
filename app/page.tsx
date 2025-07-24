@@ -467,8 +467,8 @@ export default function IndieFilmApp() {
       <main className="relative z-10 -mt-32 pb-20">
         {movieCategories.map((category, categoryIndex) => (
           <section key={category.title} className="mb-12 px-6">
-            <h2 className="text-2xl font-bold mb-6">{category.title}</h2>
-            <div className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide">
+            <h2 className="text-2xl text-center font-bold mb-6">{category.title}</h2>
+            <div className="flex space-x-4 overflow-x-auto justify-evenly pb-4 scrollbar-hide align-middle">
               {category.movies.map((movie) => (
                 <div
                   key={movie.id}
