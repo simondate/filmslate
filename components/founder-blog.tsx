@@ -65,7 +65,7 @@ export function FounderBlog() {
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute top-4 left-4">
-                  <Badge className="bg-red-600 text-white">{post.category}</Badge>
+                  <Badge className="bg-purple-600 text-white">{post.category}</Badge>
                 </div>
               </div>
 
@@ -81,13 +81,13 @@ export function FounderBlog() {
                   </div>
                 </div>
 
-                <h3 className="text-xl font-semibold mb-3 group-hover:text-red-400 transition-colors">{post.title}</h3>
+                <h3 className="text-xl font-semibold mb-3 group-hover:text-purple-400 transition-colors">{post.title}</h3>
 
                 <p className="text-gray-400 text-sm mb-4 line-clamp-3">{post.excerpt}</p>
 
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="inline-flex items-center text-red-400 hover:text-red-300 transition-colors text-sm font-medium"
+                  className="inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors text-sm font-medium"
                 >
                   Read More
                   <ArrowRight className="w-4 h-4 ml-1" />
@@ -100,7 +100,7 @@ export function FounderBlog() {
         <div className="text-center">
           <Button
             variant="outline"
-            className="border-red-600 text-red-400 hover:bg-red-600 hover:text-white bg-transparent"
+            className="border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-white bg-transparent"
             asChild
           >
             <Link href="/blog">

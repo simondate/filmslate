@@ -623,7 +623,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 <Filter className="w-4 h-4 mr-2" />
                 Filters
                 {hasActiveFilters && (
-                  <Badge className="ml-2 bg-red-600 text-white">
+                  <Badge className="ml-2 bg-purple-600 text-white">
                     {
                       [
                         selectedGenre !== "all",

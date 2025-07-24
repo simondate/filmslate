@@ -589,17 +589,17 @@ export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
 
             {/* Founder's Thoughts */}
             {founderReview && (
-              <div className="bg-gradient-to-r from-red-900/20 to-red-800/20 border border-red-800/30 rounded-lg p-4">
+              <div className="bg-gradient-to-r from-purple-900/20 to-purple-800/20 border border-purple-800/30 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-bold">
+                    <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold">
                       FS
                     </div>
                     <div>
                       <h4 className="font-semibold">Founder's Thoughts</h4>
                       <div className="flex items-center space-x-2">
                         <StarRating rating={founderReview.rating} readOnly size="small" />
-                        <Badge className="bg-red-600 text-white text-xs">Editorial</Badge>
+                        <Badge className="bg-purple-600 text-white text-xs">Editorial</Badge>
                       </div>
                     </div>
                   </div>
@@ -608,7 +608,7 @@ export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
 
                 <p className="text-gray-300 mb-3 leading-relaxed">{founderReview.excerpt}</p>
 
-                <Button variant="link" className="text-red-400 hover:text-red-300 p-0 h-auto" asChild>
+                <Button variant="link" className="text-purple-400 hover:text-purple-300 p-0 h-auto" asChild>
                   <a href={founderReview.fullPostUrl}>Read full post →</a>
                 </Button>
               </div>
@@ -672,10 +672,10 @@ export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
 
                       <button
                         onClick={() => toggleLike(review.id)}
-                        className="flex items-center space-x-1 text-gray-400 hover:text-red-400 transition-colors"
+                        className="flex items-center space-x-1 text-gray-400 hover:text-purple-400 transition-colors"
                       >
                         <Heart
-                          className={`w-4 h-4 ${likedReviews.has(review.id) ? "fill-current text-red-400" : ""}`}
+                          className={`w-4 h-4 ${likedReviews.has(review.id) ? "fill-current text-purple-400" : ""}`}
                         />
                         <span className="text-xs">{review.likes + (likedReviews.has(review.id) ? 1 : 0)}</span>
                       </button>

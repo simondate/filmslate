@@ -425,7 +425,7 @@ export default function IndieFilmApp() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-xl font-bold text-red-500 mb-4">FilmSlate</h3>
+              <h3 className="text-xl font-bold text-purple-500 mb-4">FilmSlate</h3>
               <p className="text-gray-400 text-sm">
                 Discover and stream the best independent films from around the world.
               </p>
