@@ -32,20 +32,20 @@ export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
   const externalReviews = [
     {
       source: "Sebastian",
-      score: "98%",
+      score: "4/5 stars",
       link: "#",
       summary:
         "A dazzling, heartfelt, and utterly original adventure that redefines the multiverse concept with emotional depth.",
     },
     {
       source: "Robyn",
-      score: "89/100",
+      score: "3/5 stars",
       link: "#",
       summary: "A chaotic masterpiece that blends genres with incredible skill and delivers a powerful message.",
     },
     {
       source: "Farah",
-      score: "8.7/10",
+      score: "3/5 stars",
       link: "#",
       summary: "An exhilarating ride that is both hilarious and deeply moving, with standout performances.",
     },
