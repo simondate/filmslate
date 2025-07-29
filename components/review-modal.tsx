@@ -29,23 +29,23 @@ interface ReviewModalProps {
 export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
   if (!movie) return null
 
-  const externalReviews = [
+  const newsletterReviews = [
     {
       source: "Sebastian",
-      score: "4/5 stars",
+      score: 4,
       link: "#",
       summary:
         "A dazzling, heartfelt, and utterly original adventure that redefines the multiverse concept with emotional depth.",
     },
     {
       source: "Robyn",
-      score: "3/5 stars",
+      score: 3,
       link: "#",
       summary: "A chaotic masterpiece that blends genres with incredible skill and delivers a powerful message.",
     },
     {
-      source: "Farah",
-      score: "3/5 stars",
+      source: "Farah",  
+      score:  3,
       link: "#",
       summary: "An exhilarating ride that is both hilarious and deeply moving, with standout performances.",
     },
@@ -157,13 +157,13 @@ export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
 
           <h3 className="text-xl font-bold mb-4">FilmSlate newsletter</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            {externalReviews.map((review, index) => (
+            {newsletterReviews.map((review, index) => (
               <Card key={index} className="bg-gray-800 border-gray-700">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-semibold text-gray-200">{review.source}</span>
                     <Badge variant="secondary" className="bg-green-600/20 text-green-400 border-none">
-                      {review.score}
+                      {renderStars(review.score)}
                     </Badge>
                   </div>
                   <p className="text-sm text-gray-400 line-clamp-3">{review.summary}</p>
@@ -182,7 +182,7 @@ export function ReviewModal({ movie, isOpen, onClose }: ReviewModalProps) {
 
           <h3 className="text-xl font-bold mb-4">Community Reviews</h3>
 
-            <h3 className="text-lg font-semibold mb-3">The film slate community has given this an average rating of 4.3</h3>
+            <h3 className="text-lg font-semibold mb-3">FilmSlate average - 4.3</h3>
 
           {/* Your Rating */}
           <div className="bg-gray-900 rounded-lg p-4">
