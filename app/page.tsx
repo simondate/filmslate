@@ -275,7 +275,7 @@ const movieCategories = [
     ],
   },
   {
-    title: "Documentary Features",
+    title: "LGBT+ Creators",
     movies: [
       {
         id: 16,
