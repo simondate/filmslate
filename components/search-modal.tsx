@@ -711,7 +711,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     <Slider
                       value={ratingRange}
                       onValueChange={setRatingRange}
-                      max={10}
+                      max={5}
                       min={0}
                       step={0.1}
                       className="mt-2"
