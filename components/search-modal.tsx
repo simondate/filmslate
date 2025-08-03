@@ -588,7 +588,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     selectedGenre !== "all" ||
     selectedDecade !== "all" ||
     ratingRange[0] > 0 ||
-    ratingRange[1] < 10 ||
     ratingRange[1] < 5 ||
     showOnlyRated ||
     sortBy !== "relevance"
