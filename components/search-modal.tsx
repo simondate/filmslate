@@ -497,7 +497,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedGenre, setSelectedGenre] = useState<string>("all")
   const [selectedDecade, setSelectedDecade] = useState<string>("all")
-  const [ratingRange, setRatingRange] = useState([0, 10])
+  const [ratingRange, setRatingRange] = useState([0, 5])
   const [showFilters, setShowFilters] = useState(false)
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null)
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
@@ -589,6 +589,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     selectedDecade !== "all" ||
     ratingRange[0] > 0 ||
     ratingRange[1] < 10 ||
+    ratingRange[1] < 5 ||
     showOnlyRated ||
     sortBy !== "relevance"
 
@@ -628,7 +629,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                       [
                         selectedGenre !== "all",
                         selectedDecade !== "all",
-                        ratingRange[0] > 0 || ratingRange[1] < 10,
+                        ratingRange[0] > 0 || ratingRange[1] < 5,
                         showOnlyRated,
                         sortBy !== "relevance",
                       ].filter(Boolean).length
